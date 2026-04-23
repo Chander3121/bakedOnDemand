@@ -1,0 +1,150 @@
+<div class="bg-[#fffaf7]">
+
+  <!-- 🌟 HERO -->
+  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+
+    <!-- LEFT -->
+    <div>
+      <h1 class="text-5xl font-bold leading-tight mb-6">
+        Crafted with Love,<br>
+        Baked for Happiness 🍰
+      </h1>
+
+      <p class="text-gray-600 text-lg mb-8 max-w-md">
+        Premium cakes & desserts made with the finest ingredients — because every bite should feel special.
+      </p>
+
+      <div class="flex items-center gap-4">
+        <%= link_to "Shop Now", products_path,
+          class: "bg-pink-500 hover:bg-pink-600 text-white px-7 py-3 rounded-xl font-semibold shadow-md" %>
+
+        <%= link_to "Explore Menu", products_path,
+          class: "px-7 py-3 rounded-xl border border-gray-300 hover:bg-white font-medium" %>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="flex justify-center">
+      <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?q=80&w=1200"
+           class="rounded-3xl shadow-xl w-96 h-96 object-cover">
+    </div>
+
+  </section>
+
+  <!-- ✨ TRUST -->
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+
+      <div>
+        <p class="text-3xl">🍃</p>
+        <p class="text-lg font-semibold">Fresh Ingredients</p>
+      </div>
+
+      <div>
+        <p class="text-3xl">🚚</p>
+        <p class="text-lg font-semibold">Fast Delivery</p>
+      </div>
+
+      <div>
+        <p class="text-3xl">🎂</p>
+        <p class="text-lg font-semibold">Custom Cakes</p>
+      </div>
+
+      <div>
+        <p class="text-3xl">❤️</p>
+        <p class="text-lg font-semibold">10k+ Customers</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 🧁 CATEGORIES -->
+  <section class="max-w-7xl mx-auto px-6 py-20">
+
+    <h2 class="text-3xl font-bold mb-10">Explore Categories</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+      <% [
+        {name: "Cakes", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587"},
+        {name: "Pastries", img: "https://images.unsplash.com/photo-1559620192-032c4bc4674e"},
+        {name: "Cookies", img: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e"},
+        {name: "Breads", img: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec"}
+      ].each do |cat| %>
+
+        <div class="bg-white rounded-2xl overflow-hidden shadow hover:shadow-lg transition">
+
+          <div class="h-44">
+            <img src="<%= cat[:img] %>" class="w-full h-full object-cover">
+          </div>
+
+          <div class="py-4 text-center">
+            <h3 class="font-semibold text-lg"><%= cat[:name] %></h3>
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+  <!-- 🌿 HEALTH -->
+  <section class="bg-pink-50 py-20">
+    <div class="max-w-4xl mx-auto text-center px-6">
+
+      <h2 class="text-2xl font-bold mb-4">
+        Baking with Conscious Ingredients 🌿
+      </h2>
+
+      <p class="text-gray-600">
+        We believe desserts can be both indulgent and mindful — offering eggless, sugar-free, and preservative-free options without compromising taste.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- 💬 TESTIMONIALS -->
+  <section class="max-w-6xl mx-auto px-6 py-20">
+
+    <h2 class="text-2xl font-bold text-center mb-10">
+      Loved by Customers ❤️
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <% [
+        {name: "Riya Sharma", text: "Absolutely loved the chocolate cake. Fresh, soft and perfectly sweet!"},
+        {name: "Amit Verma", text: "Best bakery experience I've had. The quality is top-notch."},
+        {name: "Neha Gupta", text: "Beautiful presentation and amazing taste. Will order again!"}
+      ].each do |t| %>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+          <p class="text-gray-600 mb-4">“<%= t[:text] %>”</p>
+          <p class="font-semibold text-sm">— <%= t[:name] %></p>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+  <!-- 🚀 CTA -->
+  <section class="bg-pink-500 text-white py-16 text-center">
+
+    <h2 class="text-3xl font-bold mb-4">
+      Make Every Occasion Sweeter 🍰
+    </h2>
+
+    <p class="mb-6 text-pink-100">
+      Order your favorite desserts today and enjoy freshness like never before.
+    </p>
+
+    <%= link_to "Order Now", products_path,
+      class: "bg-white text-pink-500 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100" %>
+
+  </section>
+
+</div>

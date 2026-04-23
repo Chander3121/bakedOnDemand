@@ -1,0 +1,48 @@
+<footer class="bg-gray-900 text-gray-300 mt-16">
+  <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-8">
+
+    <!-- Brand -->
+    <div>
+      <h2 class="text-xl font-bold text-white mb-3">🍰 BakeOnDemand</h2>
+      <p class="text-sm text-gray-400">
+        Freshly baked happiness delivered to your doorstep. Cakes, pastries, and more made with love.
+      </p>
+    </div>
+
+    <!-- Links -->
+    <div>
+      <h3 class="text-white font-semibold mb-3">Quick Links</h3>
+      <ul class="space-y-2 text-sm">
+        <li><%= link_to "Home", root_path, class: "hover:text-white" %></li>
+        <li><%= link_to "Products", products_path, class: "hover:text-white" %></li>
+        <li><%= link_to "About Us", "#", class: "hover:text-white" %></li>
+        <li><%= link_to "Contact", "#", class: "hover:text-white" %></li>
+      </ul>
+    </div>
+
+    <!-- Categories -->
+    <div>
+      <h3 class="text-white font-semibold mb-3">Categories</h3>
+      <ul class="space-y-2 text-sm">
+        <li>Cakes</li>
+        <li>Pastries</li>
+        <li>Cookies</li>
+        <li>Breads</li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div>
+      <h3 class="text-white font-semibold mb-3">Contact</h3>
+      <p class="text-sm">📍 Delhi, India</p>
+      <p class="text-sm">📞 +91 98765 43210</p>
+      <p class="text-sm">📧 support@bakeondemand.com</p>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="border-t border-gray-700 text-center text-sm py-4 text-gray-500">
+    © <%= Time.current.year %> BakeOnDemand. All rights reserved.
+  </div>
+</footer>

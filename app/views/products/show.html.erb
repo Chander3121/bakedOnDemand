@@ -1,0 +1,153 @@
+<div class="max-w-6xl mx-auto px-4 py-10">
+
+  <div class="grid md:grid-cols-2 gap-12">
+
+    <!-- 🖼️ Image Section -->
+    <div>
+      <div class="bg-gray-100 rounded-2xl overflow-hidden h-[420px] mb-4">
+        <% if @product.images.attached? %>
+          <%= image_tag @product.images.first, id: "mainImage", class: "w-full h-full object-cover transition duration-300" %>
+        <% else %>
+          <div class="flex items-center justify-center h-full text-gray-400">
+            No Image
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="flex gap-3">
+        <% @product.images.each do |img| %>
+          <%= image_tag img,
+            class: "w-20 h-20 object-cover rounded-lg cursor-pointer border hover:border-pink-500",
+            onclick: "changeImage(this.src)" %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 📦 Details Section -->
+    <div>
+
+      <!-- Title -->
+      <h1 class="text-3xl font-bold mb-2"><%= @product.name %></h1>
+
+      <!-- Tags -->
+      <div class="flex gap-2 mb-4">
+        <% @product.tags.each do |tag| %>
+          <span class="bg-pink-100 text-pink-600 text-xs px-3 py-1 rounded-full">
+            <%= tag.name %>
+          </span>
+        <% end %>
+      </div>
+
+      <!-- Description -->
+      <p class="text-gray-600 mb-6"><%= @product.description %></p>
+
+      <% default_variant = @product.product_variants.first %>
+
+      <!-- Price -->
+      <div class="mb-6">
+        <p class="text-3xl font-bold text-green-600">
+          ₹<span id="price"><%= default_variant.price %></span>
+        </p>
+      </div>
+
+      <!-- Variant Selection -->
+      <div class="mb-6">
+        <p class="font-semibold mb-3">Select Size:</p>
+
+        <div class="flex flex-wrap gap-3">
+          <% @product.product_variants.each_with_index do |variant, index| %>
+            <label>
+              <input type="radio"
+                     name="variant"
+                     value="<%= variant.id %>"
+                     data-price="<%= variant.price %>"
+                     data-stock="<%= variant.stock %>"
+                     class="hidden variant-radio"
+                     <%= "checked" if index == 0 %>>
+
+              <div class="variant-box px-4 py-2 border rounded-xl cursor-pointer transition hover:border-pink-500">
+                <p class="text-sm font-medium"><%= variant.size %></p>
+                <p class="text-xs text-gray-500">₹<%= variant.price %></p>
+              </div>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Quantity Selector -->
+      <div class="mb-6">
+        <p class="font-semibold mb-2">Quantity:</p>
+
+        <div class="flex items-center gap-3">
+          <button type="button" onclick="decreaseQty()"
+            class="w-10 h-10 bg-gray-200 rounded-full text-lg">−</button>
+
+          <input type="text" id="quantity" value="1"
+            class="w-12 text-center border rounded-lg py-1">
+
+          <button type="button" onclick="increaseQty()"
+            class="w-10 h-10 bg-gray-200 rounded-full text-lg">+</button>
+        </div>
+
+        <p id="stockInfo" class="text-sm text-gray-500 mt-2"></p>
+      </div>
+
+      <!-- Add to Cart -->
+      <%= form_with url: "#", method: :post do %>
+        <input type="hidden" name="product_variant_id" id="selected_variant" value="<%= default_variant.id %>">
+        <input type="hidden" name="quantity" id="final_quantity" value="1">
+
+        <button class="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-xl text-lg font-semibold transition">
+          Add to Cart
+        </button>
+      <% end %>
+
+      <!--<%#= form_with url: cart_items_path, method: :post do %>
+        <input type="hidden" name="product_variant_id" id="selected_variant" value="<%= default_variant.id %>">
+        <input type="hidden" name="quantity" id="final_quantity" value="1">
+
+        <button class="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-xl text-lg font-semibold transition">
+          Add to Cart 🛒
+        </button>
+      <%# end %> -->
+
+    </div>
+  </div>
+</div>
+
+<!-- ⚡ JS -->
+<script>
+  function changeImage(src) {
+    document.getElementById("mainImage").src = src
+  }
+
+  const radios = document.querySelectorAll('.variant-radio')
+  const priceEl = document.getElementById("price")
+  const hiddenInput = document.getElementById("selected_variant")
+  const stockInfo = document.getElementById("stockInfo")
+
+  radios.forEach(radio => {
+    radio.addEventListener("change", () => {
+      priceEl.innerText = radio.dataset.price
+      hiddenInput.value = radio.value
+      stockInfo.innerText = `Stock available: ${radio.dataset.stock}`
+    })
+  })
+
+  function increaseQty() {
+    let qty = document.getElementById("quantity")
+    let value = parseInt(qty.value) || 1
+    qty.value = value + 1
+    document.getElementById("final_quantity").value = qty.value
+  }
+
+  function decreaseQty() {
+    let qty = document.getElementById("quantity")
+    let value = parseInt(qty.value) || 1
+    if (value > 1) {
+      qty.value = value - 1
+      document.getElementById("final_quantity").value = qty.value
+    }
+  }
+</script>

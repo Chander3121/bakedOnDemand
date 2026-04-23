@@ -1,0 +1,71 @@
+<div class="bg-white rounded-2xl shadow hover:shadow-lg transition duration-300 overflow-hidden">
+  <!-- 🖼️ Image -->
+  <div class="h-48 bg-gray-100 overflow-hidden">
+    <% if product.images.attached? %>
+      <%= image_tag product.images.first, class: "w-full h-full object-cover hover:scale-105 transition duration-300" %>
+    <% else %>
+      <div class="flex items-center justify-center h-full text-gray-400">
+        No Image
+      </div>
+    <% end %>
+  </div>
+
+  <!-- 📦 Content -->
+  <div class="p-4">
+    
+    <!-- Name -->
+    <h2 class="text-lg font-semibold mb-1">
+      <%= product.name %>
+    </h2>
+
+    <!-- Description -->
+    <p class="text-sm text-gray-500 mb-2 line-clamp-2">
+      <%= product.description %>
+    </p>
+
+    <!-- Tags -->
+    <div class="flex flex-wrap gap-2 mb-3">
+      <% product.tags.each do |tag| %>
+        <span class="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full">
+          <%= tag.name %>
+        </span>
+      <% end %>
+    </div>
+
+    <!-- Price -->
+    <% if product.product_variants.any? %>
+      <% min_price = product.product_variants.minimum(:price) %>
+      <p class="text-green-600 font-bold text-lg mb-2">
+        ₹<%= min_price %>
+        <span class="text-sm text-gray-400 font-normal">onwards</span>
+      </p>
+    <% end %>
+
+    <!-- Variants -->
+    <div class="text-xs text-gray-500 mb-4">
+      <% product.product_variants.limit(2).each do |variant| %>
+        <div class="flex justify-between">
+          <span><%= variant.size %></span>
+          <span>₹<%= variant.price %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-between items-center">
+      <%= link_to "View", product_path(product),
+        class: "text-sm text-blue-600 hover:underline" %>
+
+      <%= button_to "Add",
+        "#",
+        method: :post,
+        class: "bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-1 rounded-full" %>
+
+      <%#= button_to "Add",
+        cart_items_path(product_variant_id: product.product_variants.first.id),
+        method: :post,
+        class: "bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-1 rounded-full" %>
+    </div>
+
+  </div>
+</div>

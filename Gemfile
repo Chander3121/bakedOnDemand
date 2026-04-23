@@ -71,3 +71,5 @@ gem "jwt", "~> 3.1"
 
 gem "graphql", "~> 2.5"
 gem "graphiql-rails", group: :development
+
+gem "tailwindcss-rails", "~> 4.4"
