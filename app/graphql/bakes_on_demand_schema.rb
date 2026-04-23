@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RailsTemplateSchema < GraphQL::Schema
+class BakesOnDemandSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 
