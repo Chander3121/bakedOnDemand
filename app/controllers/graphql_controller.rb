@@ -5,11 +5,15 @@ class GraphqlController < ApplicationController
   # This allows for outside API access while preventing CSRF attacks,
   # but you'll have to authenticate your user separately
   # protect_from_forgery with: :null_session
+  include Authenticatable
 
   def execute
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
+    context = {
+                current_user: current_user
+              }
     result = RailsTemplateSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => e
@@ -18,19 +22,6 @@ class GraphqlController < ApplicationController
   end
 
   private
-
-  def context
-    {
-      current_user: current_user_from_token
-    }
-  end
-
-  def current_user_from_token
-    header = request.headers['Authorization']
-    token = header.split(' ').last if header
-    decoded = JwtService.decode(token)
-    User.find(decoded["user_id"]) if decoded
-  end
 
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
