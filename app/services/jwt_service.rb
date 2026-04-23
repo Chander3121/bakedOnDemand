@@ -9,7 +9,6 @@ class JwtService
   end
 
   def self.decode(token)
-    binding.pry
     decoded = JWT.decode(token, SECRET)[0]
 
     if decoded["exp"] && Time.now.to_i > decoded["exp"]
