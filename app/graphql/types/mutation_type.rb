@@ -8,5 +8,9 @@ module Types
     def test_field
       "Hello World"
     end
+
+    # developer mutations starts here
+    field :login, mutation: Mutations::Login
+    field :refresh_token, mutation: Mutations::RefreshToken
   end
 end
