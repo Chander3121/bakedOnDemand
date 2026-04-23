@@ -56,9 +56,12 @@
       <%= link_to "View", product_path(product),
         class: "text-sm text-blue-600 hover:underline" %>
 
+      <% variant = product.product_variants.first %>
+
       <%= button_to "Add",
-        "#",
+        cart_items_path(product_variant_id: variant.id, quantity: 1),
         method: :post,
+        form: { data: { turbo_stream: true } },
         class: "bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-1 rounded-full" %>
 
       <%#= button_to "Add",

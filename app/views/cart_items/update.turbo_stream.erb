@@ -1,0 +1,10 @@
+<%= turbo_stream.replace "cart_item_#{@item.id}", partial: "cart_items/item", locals: { item: @item } if @item.persisted? %>
+
+<%= turbo_stream.replace "cart_summary", partial: "carts/summary", locals: { cart: @cart } %>
+
+<%= turbo_stream.replace "cart_count" do %>
+  <span id="cart_count"
+        class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs px-1.5 rounded-full">
+    <%= cart_count %>
+  </span>
+<% end %>

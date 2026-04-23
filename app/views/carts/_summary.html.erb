@@ -1,0 +1,26 @@
+<div id="cart_summary">
+  <% total = cart.cart_items.sum { |i| i.quantity * i.product_variant.price } %>
+
+  <div class="bg-white rounded-2xl shadow p-6">
+
+    <h2 class="font-semibold mb-4">Order Summary</h2>
+
+    <div class="flex justify-between mb-2">
+      <span>Subtotal</span>
+      <span>₹<%= total %></span>
+    </div>
+
+    <div class="flex justify-between mb-4">
+      <span>Delivery</span>
+      <span class="text-green-600">Free</span>
+    </div>
+
+    <hr class="mb-4">
+
+    <div class="flex justify-between font-bold text-lg">
+      <span>Total</span>
+      <span>₹<%= total %></span>
+    </div>
+
+  </div>
+</div>

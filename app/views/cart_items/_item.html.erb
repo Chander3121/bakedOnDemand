@@ -1,0 +1,43 @@
+<% product = item.product_variant.product %>
+<% variant = item.product_variant %>
+
+<div id="cart_item_<%= item.id %>" class="bg-white rounded-2xl shadow p-4 flex gap-4 items-center">
+
+  <div class="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
+    <% if product.images.attached? %>
+      <%= image_tag product.images.first, class: "w-full h-full object-cover" %>
+    <% end %>
+  </div>
+
+  <div class="flex-1">
+    <h2 class="font-semibold"><%= product.name %></h2>
+    <p class="text-sm text-gray-500"><%= variant.size %></p>
+    <p class="text-green-600 font-bold">₹<%= variant.price %></p>
+  </div>
+
+  <!-- Quantity -->
+  <div class="flex items-center gap-2">
+
+    <%= button_to "-", cart_item_path(item),
+      method: :patch,
+      params: { quantity: item.quantity - 1 },
+      form: { data: { turbo_stream: true } },
+      class: "px-3 py-1 bg-gray-200 rounded cursor-pointer" %>
+
+    <span id="quantity_<%= item.id %>"><%= item.quantity %></span>
+
+    <%= button_to "+", cart_item_path(item),
+      method: :patch,
+      params: { quantity: item.quantity + 1 },
+      form: { data: { turbo_stream: true } },
+      class: "px-3 py-1 bg-gray-200 rounded cursor-pointer" %>
+
+  </div>
+
+  <!-- Remove -->
+  <%= button_to "✕", cart_item_path(item),
+    method: :delete,
+    form: { data: { turbo_stream: true } },
+    class: "text-red-500 cursor-pointer" %>
+
+</div>

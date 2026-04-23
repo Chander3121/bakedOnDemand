@@ -25,11 +25,13 @@
     <div class="flex items-center gap-4">
 
       <!-- Cart -->
-      <%= link_to "#", class: "relative" do %>
+      <%= link_to cart_path, class: "relative" do %>
         🛒
-        <span class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs px-1.5 rounded-full">
-          2
-        </span>
+        <% if cart_count > 0 %>
+          <span id="cart_count" class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs px-1.5 rounded-full">
+            <%= cart_count %>
+          </span>
+        <% end %>
       <% end %>
 
       <!-- Profile -->

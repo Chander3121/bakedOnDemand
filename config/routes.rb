@@ -20,4 +20,7 @@ Rails.application.routes.draw do
   resources :products
   get "cakes", to: "products#cakes", as: :cakes
   get "pastries", to: "products#pastries", as: :pastries
+
+  resource :cart, only: [:show]
+  resources :cart_items, only: [:create, :update, :destroy]
 end

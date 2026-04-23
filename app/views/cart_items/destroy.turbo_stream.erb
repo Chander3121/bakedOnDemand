@@ -1,0 +1,18 @@
+<%= turbo_stream.remove "cart_item_#{@item.id}" %>
+
+<%= turbo_stream.replace "cart_summary", partial: "carts/summary", locals: { cart: @cart } %>
+
+<% if @cart.cart_items.empty? %>
+  <%= turbo_stream.replace "cart_container" do %>
+    <div class="text-center py-20">
+      <p>Your cart is empty 😢</p>
+    </div>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "cart_count" do %>
+  <span id="cart_count"
+        class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs px-1.5 rounded-full">
+    <%= cart_count %>
+  </span>
+<% end %>
