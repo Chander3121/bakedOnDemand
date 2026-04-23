@@ -1,0 +1,81 @@
+<div class="max-w-4xl mx-auto px-6 py-16 text-center">
+
+  <h1 class="text-3xl font-bold text-green-600 mb-4">
+    🎉 Order Confirmed!
+  </h1>
+
+  <p class="text-gray-600 mb-8">
+    Your delicious treats are being prepared 🍰
+  </p>
+
+  <!-- 🧾 Order Info -->
+  <div class="bg-white p-6 rounded-2xl shadow mb-10 text-left">
+    <p><strong>Order ID:</strong> #<%= @order.id %></p>
+    <p><strong>Name:</strong> <%= @order.name %></p>
+    <p><strong>Phone:</strong> <%= @order.phone %></p>
+    <p><strong>Address:</strong> <%= @order.address %></p>
+  </div>
+
+  <!-- 🚚 DELIVERY TRACKER (PREMIUM) -->
+  <div class="bg-white p-8 rounded-3xl shadow-sm">
+
+    <h2 class="text-lg font-semibold mb-8 text-center">
+      Delivery Status
+    </h2>
+
+    <% steps = ["Order Placed", "Preparing", "Out for Delivery", "Delivered"] %>
+    <% current_step = 1 %> <%# change dynamically later %>
+
+    <div class="relative">
+
+      <!-- 🔗 Progress Line (background) -->
+      <div class="absolute top-4 left-0 w-full h-1 bg-gray-200 rounded"></div>
+
+      <!-- 🔗 Active Progress -->
+      <div class="absolute top-4 left-0 h-1 bg-green-500 rounded transition-all"
+           style="width: <%= (current_step.to_f / (steps.length - 1)) * 100 %>%">
+      </div>
+
+      <!-- Steps -->
+      <div class="relative flex justify-between">
+
+        <% steps.each_with_index do |step, index| %>
+          <div class="flex flex-col items-center text-center w-full">
+
+            <!-- Circle -->
+            <div class="z-10 w-10 h-10 flex items-center justify-center rounded-full border-2
+              <%= if index < current_step
+                    "bg-green-500 border-green-500 text-white"
+                  elsif index == current_step
+                    "bg-white border-green-500 text-green-500"
+                  else
+                    "bg-white border-gray-300 text-gray-400"
+                  end %>">
+
+              <% if index < current_step %>
+                ✓
+              <% else %>
+                <%= index + 1 %>
+              <% end %>
+
+            </div>
+
+            <!-- Label -->
+            <p class="mt-3 text-xs font-medium
+              <%= index <= current_step ? "text-gray-800" : "text-gray-400" %>">
+              <%= step %>
+            </p>
+
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="mt-10">
+    <%= link_to "Continue Shopping", products_path,
+      class: "bg-pink-500 text-white px-6 py-3 rounded-xl" %>
+  </div>
+
+</div>

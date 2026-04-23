@@ -1,0 +1,51 @@
+<div class="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-10">
+
+  <!-- 🧾 Address -->
+  <div>
+    <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
+
+    <%= form_with url: checkout_path do %>
+
+      <div class="space-y-4">
+        <input name="name" placeholder="Full Name"
+          class="w-full border p-3 rounded-xl">
+
+        <input name="phone" placeholder="Phone Number"
+          class="w-full border p-3 rounded-xl">
+
+        <textarea name="address" placeholder="Full Address"
+          class="w-full border p-3 rounded-xl"></textarea>
+      </div>
+
+      <button class="mt-6 w-full bg-pink-500 text-white py-3 rounded-xl">
+        Continue to Payment →
+      </button>
+
+    <% end %>
+  </div>
+
+  <!-- 💰 Summary -->
+  <div class="bg-white p-6 rounded-2xl shadow">
+    <h2 class="font-semibold mb-4">Order Summary</h2>
+
+    <% total = @cart.cart_items.sum { |i| i.quantity * i.product_variant.price } %>
+
+    <div class="flex justify-between mb-2">
+      <span>Subtotal</span>
+      <span>₹<%= total %></span>
+    </div>
+
+    <div class="flex justify-between mb-4">
+      <span>Delivery</span>
+      <span class="text-green-600">Free</span>
+    </div>
+
+    <hr class="mb-4">
+
+    <div class="flex justify-between font-bold text-lg">
+      <span>Total</span>
+      <span>₹<%= total %></span>
+    </div>
+  </div>
+
+</div>

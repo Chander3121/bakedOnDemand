@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get "orders/success"
+  get "payments/show"
+  get "payments/verify"
+  get "checkouts/new"
+  get "checkouts/create"
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
@@ -23,4 +28,14 @@ Rails.application.routes.draw do
 
   resource :cart, only: [:show]
   resources :cart_items, only: [:create, :update, :destroy]
+
+  resource :checkout, only: [:new, :create]
+  get "/payment", to: "payments#show"
+  post "/payment/verify", to: "payments#verify"
+
+  resources :orders do
+    member do
+      get :success
+    end
+  end
 end

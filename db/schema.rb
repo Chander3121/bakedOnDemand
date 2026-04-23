@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_213351) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_222543) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,6 +64,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_213351) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
     t.index ["slug"], name: "index_categories_on_slug", unique: true
+  end
+
+  create_table "order_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "order_id", null: false
+    t.decimal "price", precision: 10, scale: 2
+    t.bigint "product_variant_id", null: false
+    t.integer "quantity"
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_variant_id"], name: "index_order_items_on_product_variant_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.text "address"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.string "payment_method"
+    t.string "payment_status"
+    t.string "phone"
+    t.string "razorpay_order_id"
+    t.string "razorpay_payment_id"
+    t.string "status"
+    t.decimal "total_amount", precision: 10, scale: 2
+    t.datetime "updated_at", null: false
   end
 
   create_table "product_tags", force: :cascade do |t|
@@ -131,6 +156,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_213351) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "product_variants"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "product_variants"
   add_foreign_key "product_tags", "products"
   add_foreign_key "product_tags", "tags"
   add_foreign_key "product_variants", "products"
