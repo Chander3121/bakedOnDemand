@@ -64,3 +64,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "devise", "~> 5.0"
+
+gem "jwt", "~> 3.1"
+
+gem "graphql", "~> 2.5"
+gem "graphiql-rails", group: :development
