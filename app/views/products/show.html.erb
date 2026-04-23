@@ -56,7 +56,9 @@
         <p class="font-semibold mb-3">Select Size:</p>
 
         <div class="flex flex-wrap gap-3">
-          <% @product.product_variants.each_with_index do |variant, index| %>
+          <% first_available = @product.product_variants.find { |v| v.stock > 0 } %>
+          <% @product.product_variants.each do |variant| %>
+            <%= turbo_stream_from "product_variant_#{variant.id}" %>
             <label>
               <input type="radio"
                      name="variant"
@@ -64,11 +66,19 @@
                      data-price="<%= variant.price %>"
                      data-stock="<%= variant.stock %>"
                      class="hidden variant-radio"
-                     <%= "checked" if index == 0 %>>
+                     <%= "checked" if variant == first_available %>
+                     <%= "disabled" if variant.stock == 0 %>>
 
-              <div class="variant-box px-4 py-2 border rounded-xl cursor-pointer transition hover:border-pink-500">
+              <div class="variant-box px-4 py-2 border rounded-xl cursor-pointer transition hover:border-pink-500
+                <%= 'opacity-50 pointer-events-none' if variant.stock == 0 %>">
+
                 <p class="text-sm font-medium"><%= variant.size %></p>
                 <p class="text-xs text-gray-500">₹<%= variant.price %></p>
+
+                <% if variant.stock == 0 %>
+                  <p class="text-xs text-red-500">Out of stock</p>
+                <% end %>
+
               </div>
             </label>
           <% end %>
@@ -102,10 +112,10 @@
 
             <!-- Add button -->
             <button type="submit"
+              id="addToCartBtn"
               class="flex-1 bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-xl font-semibold transition">
               Add to Cart
             </button>
-
           </div>
 
         <% end %>
@@ -118,46 +128,87 @@
 
 <!-- ⚡ JS -->
 <script>
-  document.addEventListener("turbo:load", () => {
+document.addEventListener("turbo:load", () => {
 
-    function changeImage(src) {
-      const img = document.getElementById("mainImage")
-      if (img) img.src = src
-    }
+  const radios = document.querySelectorAll('.variant-radio')
+  const priceEl = document.getElementById("price")
+  const hiddenInput = document.getElementById("selected_variant")
+  const stockInfo = document.getElementById("stockInfo")
+  const addBtn = document.getElementById("addToCartBtn")
+  const qtyInput = document.getElementById("quantity")
+  const hiddenQty = document.getElementById("final_quantity")
 
-    window.changeImage = changeImage
+  let currentStock = 0
 
-    const radios = document.querySelectorAll('.variant-radio')
-    const priceEl = document.getElementById("price")
-    const hiddenInput = document.getElementById("selected_variant")
-    const stockInfo = document.getElementById("stockInfo")
+  function updateUI(radio) {
+    if (!radio) return
 
-    radios.forEach(radio => {
-      radio.addEventListener("change", () => {
-        if (priceEl) priceEl.innerText = radio.dataset.price
-        if (hiddenInput) hiddenInput.value = radio.value
-        if (stockInfo) stockInfo.innerText = `Stock available: ${radio.dataset.stock}`
-      })
-    })
+    const stock = parseInt(radio.dataset.stock)
+    currentStock = stock
 
-    window.increaseQty = function () {
-      let qty = document.getElementById("quantity")
-      let hidden = document.getElementById("final_quantity")
+    if (priceEl) priceEl.innerText = radio.dataset.price
+    if (hiddenInput) hiddenInput.value = radio.value
 
-      let value = parseInt(qty.value) || 1
-      qty.value = value + 1
-      hidden.value = qty.value
-    }
-
-    window.decreaseQty = function () {
-      let qty = document.getElementById("quantity")
-      let hidden = document.getElementById("final_quantity")
-
-      let value = parseInt(qty.value) || 1
-      if (value > 1) {
-        qty.value = value - 1
-        hidden.value = qty.value
+    // 🔥 Stock messaging
+    if (stockInfo) {
+      if (stock === 0) {
+        stockInfo.innerText = "Out of stock"
+      } else if (stock <= 3) {
+        stockInfo.innerText = `Only ${stock} left 🔥`
+        stockInfo.classList.add("text-red-500")
+      } else {
+        stockInfo.innerText = `Stock available: ${stock}`
+        stockInfo.classList.remove("text-red-500")
       }
     }
+
+    // Disable button
+    if (addBtn) {
+      if (stock > 0) {
+        addBtn.disabled = false
+        addBtn.classList.remove("bg-gray-300", "cursor-not-allowed")
+        addBtn.classList.add("bg-pink-500")
+      } else {
+        addBtn.disabled = true
+        addBtn.classList.remove("bg-pink-500")
+        addBtn.classList.add("bg-gray-300", "cursor-not-allowed")
+      }
+    }
+
+    // Reset quantity if exceeds stock
+    if (qtyInput && hiddenQty) {
+      if (parseInt(qtyInput.value) > stock) {
+        qtyInput.value = stock || 1
+        hiddenQty.value = qtyInput.value
+      }
+    }
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener("change", () => updateUI(radio))
   })
+
+  // 🔥 Quantity controls with stock limit
+  window.increaseQty = function () {
+    let value = parseInt(qtyInput.value) || 1
+
+    if (value < currentStock) {
+      qtyInput.value = value + 1
+      hiddenQty.value = qtyInput.value
+    }
+  }
+
+  window.decreaseQty = function () {
+    let value = parseInt(qtyInput.value) || 1
+    if (value > 1) {
+      qtyInput.value = value - 1
+      hiddenQty.value = qtyInput.value
+    }
+  }
+
+  // Initial load
+  const selected = document.querySelector('.variant-radio:checked')
+  updateUI(selected)
+
+})
 </script>

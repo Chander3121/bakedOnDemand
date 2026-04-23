@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+.variant-radio:checked + .variant-box {
+  border-color: #ec4899;
+  background-color: #fdf2f8;
+}

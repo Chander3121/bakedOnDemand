@@ -1,0 +1,9 @@
+<div id="variant_<%= variant.id %>">
+  <% if variant.available_stock == 0 %>
+    <span class="text-red-500">Out of stock</span>
+  <% elsif variant.available_stock <= 3 %>
+    <span class="text-red-500">Only <%= variant.available_stock %> left 🔥</span>
+  <% else %>
+    <span>Stock: <%= variant.available_stock %></span>
+  <% end %>
+</div>

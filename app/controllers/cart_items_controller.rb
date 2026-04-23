@@ -5,20 +5,28 @@ class CartItemsController < ApplicationController
     variant = ProductVariant.find(params[:product_variant_id])
     cart = current_cart
 
-    item = cart.cart_items.find_by(product_variant_id: variant.id)
+    requested_qty = params[:quantity].to_i
+    existing_item = cart.cart_items.find_by(product_variant_id: variant.id)
 
-    if item
-      item.increment!(:quantity, params[:quantity].to_i.presence || 1)
+    total_requested = requested_qty + (existing_item&.quantity || 0)
+
+    if total_requested > variant.stock
+      redirect_to products_path, alert: "Only #{variant.stock} items available"
+      return
+    end
+
+    if existing_item
+      existing_item.increment!(:quantity, requested_qty)
     else
       cart.cart_items.create!(
         product_variant: variant,
-        quantity: params[:quantity] || 1
+        quantity: requested_qty
       )
     end
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to products_path, notice: "Added to cart 🛒" }
+      format.html { redirect_to products_path, notice: "Added to cart" }
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_222543) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_233751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -86,6 +86,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_222543) do
     t.string "phone"
     t.string "razorpay_order_id"
     t.string "razorpay_payment_id"
+    t.datetime "reserved_at"
     t.string "status"
     t.decimal "total_amount", precision: 10, scale: 2
     t.datetime "updated_at", null: false
@@ -106,6 +107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_222543) do
     t.string "flavor"
     t.decimal "price", precision: 10, scale: 2, null: false
     t.bigint "product_id", null: false
+    t.integer "reserved_stock"
     t.string "size"
     t.string "sku"
     t.integer "stock", default: 0
