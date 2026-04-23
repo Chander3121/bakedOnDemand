@@ -12,5 +12,6 @@ module Types
     # developer mutations starts here
     field :login, mutation: Mutations::Login
     field :refresh_token, mutation: Mutations::RefreshToken
+    field :logout, mutation: Mutations::Logout
   end
 end
