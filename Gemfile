@@ -75,3 +75,5 @@ gem "graphiql-rails", group: :development
 gem "tailwindcss-rails", "~> 4.4"
 
 gem "razorpay", "~> 3.2"
+
+gem "dotenv-rails", "~> 3.2"

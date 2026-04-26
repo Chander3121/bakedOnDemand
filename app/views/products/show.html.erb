@@ -5,8 +5,9 @@
     <!-- 🖼️ Image Section -->
     <div>
       <div class="bg-gray-100 rounded-2xl overflow-hidden h-[420px] mb-4">
-        <% if @product.images.attached? %>
-          <%= image_tag @product.images.first, id: "mainImage", class: "w-full h-full object-cover transition duration-300" %>
+        <% if true#@product.images.attached? %>
+          <%#= image_tag @product.images.first, id: "mainImage", class: "w-full h-full object-cover transition duration-300" %>
+          <%= image_tag "#{@product.name.parameterize}.jpg", id: "mainImage", class: "w-full h-full object-cover transition duration-300" %>
         <% else %>
           <div class="flex items-center justify-center h-full text-gray-400">
             No Image
