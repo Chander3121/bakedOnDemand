@@ -38,4 +38,16 @@ Rails.application.routes.draw do
       get :success
     end
   end
+
+  # Admin routes starts here
+  namespace :admin do
+    get "dashboard/index"
+    root "dashboard#index"
+
+    resources :products
+    resources :product_variants
+    resources :categories
+    resources :tags
+    resources :orders
+  end
 end

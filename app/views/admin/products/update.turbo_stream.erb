@@ -1,0 +1,11 @@
+<%= turbo_stream.replace "product_name" do %>
+  <%= render "name_inline", product: @product %>
+<% end %>
+
+<%= turbo_stream.replace "product_description" do %>
+  <%= render "description_inline", product: @product %>
+<% end %>
+
+<%= turbo_stream.replace "product_images" do %>
+  <%= render "images_inline", product: @product %>
+<% end %>

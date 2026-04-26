@@ -1,0 +1,42 @@
+<% if params[:field] == "description" %>
+
+  <%= form_with model: [:admin, product],
+    data: { turbo_frame: "product_description" } do |f| %>
+
+    <div class="space-y-2">
+
+      <%= f.text_area :description,
+        class: "w-full border px-3 py-2 rounded-lg" %>
+
+      <div class="flex gap-2">
+        <%= f.submit "Save",
+          class: "bg-pink-500 text-white px-3 py-1 rounded text-sm" %>
+
+        <%= link_to "Cancel",
+          admin_product_path(product),
+          data: { turbo_frame: "product_description" },
+          class: "text-gray-500 text-sm" %>
+      </div>
+
+    </div>
+
+  <% end %>
+
+<% else %>
+
+  <div class="flex justify-between items-start group">
+
+    <div>
+      <p class="text-sm text-gray-500">Description</p>
+      <p class="text-gray-700"><%= product.description %></p>
+    </div>
+
+    <%= link_to admin_product_path(product, field: "description"),
+      data: { turbo_frame: "product_description" },
+      class: "opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-pink-500" do %>
+      ✏️
+    <% end %>
+
+  </div>
+
+<% end %>

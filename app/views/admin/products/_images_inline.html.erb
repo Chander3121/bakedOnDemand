@@ -1,0 +1,47 @@
+<% if params[:field] == "images" %>
+
+  <%= form_with model: [:admin, product],
+    html: { multipart: true },
+    data: { turbo_frame: "product_images" } do |f| %>
+
+    <div class="space-y-3">
+
+      <%= f.file_field :images, multiple: true %>
+
+      <div class="flex gap-2">
+        <%= f.submit "Save",
+          class: "bg-pink-500 text-white px-3 py-1 rounded text-sm" %>
+
+        <%= link_to "Cancel",
+          admin_product_path(product),
+          data: { turbo_frame: "product_images" },
+          class: "text-gray-500 text-sm" %>
+      </div>
+
+    </div>
+
+  <% end %>
+
+<% else %>
+
+  <div class="flex justify-between items-start group">
+
+    <div>
+      <p class="text-sm text-gray-500 mb-2">Images</p>
+
+      <div class="flex gap-2">
+        <% product.images.each do |img| %>
+          <%= image_tag img, class: "w-20 h-20 object-cover rounded-lg" %>
+        <% end %>
+      </div>
+    </div>
+
+    <%= link_to admin_product_path(product, field: "images"),
+      data: { turbo_frame: "product_images" },
+      class: "opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-pink-500" do %>
+      ✏️
+    <% end %>
+
+  </div>
+
+<% end %>

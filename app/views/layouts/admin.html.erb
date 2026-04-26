@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "chartkick" %>
+    <%= javascript_include_tag "Chart.bundle" %>
+    <%= javascript_importmap_tags %>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body class="bg-gray-50">
+
+    <div class="flex h-screen overflow-hidden">
+
+      <!-- 🔥 Sidebar (fixed) -->
+      <aside
+        class="w-64 bg-white shadow-lg p-6 fixed inset-y-0 left-0 flex flex-col justify-between">
+
+        <div>
+          <h1 class="text-2xl font-bold text-pink-500 mb-8">
+            🍰 BakeAdmin
+          </h1>
+
+          <nav class="space-y-1 text-sm relative">
+            <% links = [
+              ["Dashboard", admin_root_path, "layout-dashboard"],
+              ["Products", admin_products_path, "cake"],
+              ["Orders", admin_orders_path, "shopping-cart"],
+              ["Categories", admin_categories_path, "grid"],
+              ["Tags", admin_tags_path, "tag"]
+            ] %>
+
+            <% links.each do |name, path, icon| %>
+              <% active = current_page?(path) %>
+
+              <%= link_to path,
+                class: "flex items-center gap-3 px-4 py-2 rounded-lg relative group #{active ? 'text-pink-600 font-medium' : 'text-gray-600 hover:text-pink-600'}" do %>
+
+                <!-- 🔥 Active indicator bar -->
+                <% if active %>
+                  <span class="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 bg-pink-500 rounded-r"></span>
+                <% end %>
+
+                <!-- Icon -->
+                <i data-lucide="<%= icon %>" class="w-4 h-4"></i>
+
+                <!-- Label -->
+                <span><%= name %></span>
+
+              <% end %>
+            <% end %>
+          </nav>
+        </div>
+
+        <div class="text-sm text-gray-500">
+          Admin Panel
+        </div>
+      </aside>
+
+      <!-- 📦 Main Content (scroll only here) -->
+      <main
+        data-controller="scroll"
+        class="flex-1 ml-64 h-screen overflow-y-auto scroll-smooth">
+
+        <div
+          data-scroll-target="header"
+          class="sticky top-0 z-10 bg-gray-50/80 backdrop-blur px-8 py-4 transition">
+
+          <h1 class="text-xl font-semibold">Admin Dashboard</h1>
+        </div>
+
+        <!-- 📦 Content -->
+        <div class="px-8 py-6 space-y-8">
+          <%= yield %>
+        </div>
+
+      </main>
+
+    </div>
+    <script>
+      document.addEventListener("turbo:load", () => {
+        if (window.lucide) lucide.createIcons();
+      });
+    </script>
+  </body>
+</html>

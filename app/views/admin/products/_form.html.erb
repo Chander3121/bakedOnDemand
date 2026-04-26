@@ -1,0 +1,114 @@
+<%= form_with model: [:admin, @product], local: true, html: { multipart: true } do |f| %>
+
+  <div class="space-y-8">
+
+    <!-- BASIC INFO -->
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div>
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "w-full border rounded-lg px-3 py-2" %>
+      </div>
+
+      <div>
+        <%= f.label :category_id, "Category" %>
+        <%= f.collection_select :category_id, Category.all, :id, :name, {}, class: "w-full border rounded-lg px-3 py-2" %>
+      </div>
+
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div>
+      <%= f.label :description %>
+      <%= f.text_area :description, class: "w-full border rounded-lg px-3 py-2" %>
+    </div>
+
+    <!-- TAGS -->
+    <div>
+      <label class="block text-sm font-medium mb-2">Tags</label>
+
+      <div data-controller="tags" class="flex flex-wrap gap-2">
+
+        <% Tag.all.each do |tag| %>
+          <button
+            type="button"
+            data-action="click->tags#toggle"
+            data-tag-id="<%= tag.id %>"
+            class="tag-chip px-3 py-1 rounded-full text-sm border transition
+            <%= @product.tag_ids.include?(tag.id) ? 'bg-pink-500 text-white border-pink-500' : 'bg-gray-100 text-gray-700' %>">
+
+            <%= tag.name %>
+          </button>
+        <% end %>
+
+      </div>
+
+      <!-- Hidden inputs -->
+      <div id="tagInputs">
+        <% @product.tag_ids.each do |id| %>
+          <input type="hidden" name="product[tag_ids][]" value="<%= id %>">
+        <% end %>
+      </div>
+
+    </div>
+
+    <!-- IMAGE PREVIEW -->
+    <div>
+      <label class="block text-sm font-medium mb-2">Product Images</label>
+
+      <!-- Upload Box -->
+      <label for="imageInput"
+        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-2xl p-8 cursor-pointer hover:border-pink-400 hover:bg-pink-50 transition">
+
+        <div class="text-3xl mb-2">📷</div>
+
+        <p class="text-sm text-gray-600">
+          Click to upload or drag & drop
+        </p>
+
+        <p class="text-xs text-gray-400 mt-1">
+          PNG, JPG up to 5MB
+        </p>
+
+        <%= f.file_field :images,
+          multiple: true,
+          id: "imageInput",
+          class: "hidden" %>
+      </label>
+
+      <!-- Preview Grid -->
+      <div id="imagePreview"
+        class="grid grid-cols-3 md:grid-cols-4 gap-3 mt-4">
+          <% @product.images.each do |img| %>
+            <%= image_tag img, class: "w-24 h-24 object-cover rounded" %>
+          <% end %>
+      </div>
+
+    </div>
+
+    <!-- VARIANTS -->
+    <div>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="font-semibold">Variants</h2>
+
+        <button type="button" id="addVariant"
+          class="bg-gray-200 px-3 py-1 rounded text-sm" data-action="click->product-form#addVariant">
+          + Add Variant
+        </button>
+      </div>
+
+      <div data-product-form-target="variants" id="variants">
+        <%= f.fields_for :product_variants do |vf| %>
+          <%= render "variant_fields", f: vf %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div>
+      <%= f.submit class: "bg-pink-500 text-white px-5 py-2 rounded-lg" %>
+    </div>
+
+  </div>
+
+<% end %>

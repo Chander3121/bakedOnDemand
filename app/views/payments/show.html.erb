@@ -13,9 +13,8 @@
         <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm">
 
           <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
-            <% if true#product.images.attached? %>
-              <%#= image_tag product.images.first, class: "w-full h-full object-cover" %>
-              <%= image_tag "#{product.name.parameterize}.jpg", class: "w-full h-full object-cover" %>
+            <% if product.images.attached? %>
+              <%= image_tag product.images.first, class: "w-full h-full object-cover" %>
             <% end %>
           </div>
 

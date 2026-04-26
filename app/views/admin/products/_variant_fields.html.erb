@@ -1,0 +1,19 @@
+<div class="variant-item grid grid-cols-4 gap-3 mb-3">
+
+  <%= f.hidden_field :_destroy %>
+
+  <%= f.text_field :size, placeholder: "Size (500g)",
+    class: "border rounded px-2 py-1 text-sm" %>
+
+  <%= f.number_field :price, placeholder: "Price",
+    class: "border rounded px-2 py-1 text-sm" %>
+
+  <%= f.number_field :stock, placeholder: "Stock",
+    class: "border rounded px-2 py-1 text-sm" %>
+
+  <button type="button"
+    class="removeVariant text-red-500 text-sm">
+    Remove
+  </button>
+
+</div>

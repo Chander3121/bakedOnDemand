@@ -1,0 +1,50 @@
+<h1 class="text-2xl font-bold mb-6 flex justify-between items-center">
+  Tags
+
+  <%= link_to "Add Tag", new_admin_tag_path,
+    class: "bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm" %>
+</h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+  <% @tags.each do |tag| %>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md hover:-translate-y-0.5 transition">
+
+      <!-- 🏷️ Icon -->
+      <div class="w-12 h-12 flex items-center justify-center bg-purple-100 text-purple-600 rounded-xl mb-4">
+        🏷️
+      </div>
+
+      <!-- Name -->
+      <h2 class="font-semibold text-lg mb-2">
+        <%= tag.name %>
+      </h2>
+
+      <!-- Meta -->
+      <p class="text-xs text-gray-500 mb-4">
+        <%= pluralize(tag.products.count, "product") %>
+      </p>
+
+      <!-- Actions -->
+      <div class="flex justify-between items-center">
+
+        <%= link_to "Edit", edit_admin_tag_path(tag),
+          class: "text-sm text-blue-600 hover:underline" %>
+
+        <%= link_to "Delete", admin_tag_path(tag),
+          method: :delete,
+          data: { confirm: "Delete this tag?" },
+          class: "text-sm text-red-500 hover:underline" %>
+
+      </div>
+
+    </div>
+  <% end %>
+
+</div>
+
+<% if @tags.empty? %>
+  <div class="text-center text-gray-500 mt-10">
+    No tags yet. Create one 🚀
+  </div>
+<% end %>

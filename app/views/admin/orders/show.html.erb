@@ -1,0 +1,181 @@
+<div class="max-w-7xl mx-auto mt-10 space-y-8">
+
+  <!-- 🔝 Header -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+      Order #<%= @order.id %>
+    </h1>
+
+    <span class="px-3 py-1 rounded-full text-sm font-medium
+      <%= case @order.status
+          when "pending" then "bg-yellow-100 text-yellow-700"
+          when "confirmed" then "bg-blue-100 text-blue-700"
+          when "out_for_delivery" then "bg-purple-100 text-purple-700"
+          when "delivered" then "bg-green-100 text-green-700"
+          when "cancelled" then "bg-red-100 text-red-700"
+          end %>">
+      <%= @order.status.humanize %>
+    </span>
+  </div>
+
+  <!-- 🚚 Delivery Timeline -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+
+    <h2 class="font-semibold mb-6">Delivery Progress</h2>
+
+    <% steps = ["Order Placed", "Confirmed", "Preparing", "Out for Delivery", "Delivered"] %>
+    <% current = order_step_index(@order.status) %>
+
+    <div class="flex items-center justify-between relative">
+
+      <% steps.each_with_index do |step, index| %>
+
+        <!-- Line -->
+        <% if index != steps.length - 1 %>
+          <div class="absolute top-4 left-0 w-full h-1 bg-gray-200 z-0"></div>
+        <% end %>
+
+        <div class="flex flex-col items-center z-10 w-full">
+
+          <!-- Circle -->
+          <div class="
+            w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium
+            <%= if index <= current
+                  'bg-green-500 text-white'
+                else
+                  'bg-gray-300 text-gray-600'
+                end %>
+          ">
+            <%= index <= current ? "✓" : index + 1 %>
+          </div>
+
+          <!-- Label -->
+          <p class="mt-2 text-xs text-center
+            <%= index <= current ? 'text-green-600 font-medium' : 'text-gray-500' %>">
+            <%= step %>
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+  <!-- 🧾 Customer + Address -->
+  <div class="grid md:grid-cols-2 gap-6">
+
+    <!-- 👤 Customer -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+      <h2 class="font-semibold mb-4">Customer Details</h2>
+
+      <p class="font-medium"><%= @order.name %></p>
+      <p class="text-sm text-gray-500"><%= @order.phone %></p>
+    </div>
+
+    <!-- 📍 Address -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+      <h2 class="font-semibold mb-4">Delivery Address</h2>
+
+      <p class="text-sm text-gray-700">
+        <%= @order.address %>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 📦 Items -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+
+    <h2 class="font-semibold mb-6">Order Items</h2>
+
+    <div class="space-y-4">
+      <% @order.order_items.each do |item| %>
+        <% product = item.product_variant.product %>
+
+        <div class="flex items-center justify-between border-b pb-3">
+
+          <!-- Left -->
+          <div class="flex items-center gap-4">
+
+            <div class="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
+              <% if product.images.attached? %>
+                <%= image_tag product.images.first, class: "w-full h-full object-cover" %>
+              <% end %>
+            </div>
+
+            <div>
+              <p class="font-medium"><%= product.name %></p>
+              <p class="text-xs text-gray-500">
+                <%= item.product_variant.size %>
+              </p>
+              <p class="text-xs text-gray-400">
+                Qty: <%= item.quantity %>
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Right -->
+          <div class="font-semibold text-green-600">
+            ₹<%= item.price * item.quantity %>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <!-- 💰 Summary -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+
+    <h2 class="font-semibold mb-4">Order Summary</h2>
+
+    <div class="space-y-2 text-sm">
+
+      <div class="flex justify-between">
+        <span>Subtotal</span>
+        <span>₹<%= @order.total_amount %></span>
+      </div>
+
+      <div class="flex justify-between">
+        <span>Delivery</span>
+        <span class="text-green-600">Free</span>
+      </div>
+
+      <hr>
+
+      <div class="flex justify-between font-bold text-lg">
+        <span>Total</span>
+        <span>₹<%= @order.total_amount %></span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🔄 Update Status -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+
+    <h2 class="font-semibold mb-4">Update Status</h2>
+
+    <%= form_with model: [:admin, @order], method: :patch do |f| %>
+
+      <div class="flex items-center gap-4">
+
+        <%= f.select :status,
+          Order.statuses.keys.map { |s| [s.humanize, s] },
+          {},
+          class: "border rounded-lg px-3 py-2 text-sm" %>
+
+        <%= f.submit "Update",
+          class: "bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg text-sm" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+</div>

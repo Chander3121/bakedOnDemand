@@ -1,0 +1,42 @@
+<% if params[:field] == "name" %>
+
+  <!-- EDIT MODE -->
+  <%= form_with model: [:admin, product],
+    data: { turbo_frame: "product_name" } do |f| %>
+
+    <div class="flex items-center gap-3">
+
+      <%= f.text_field :name,
+        class: "border px-3 py-2 rounded-lg flex-1" %>
+
+      <%= f.submit "Save",
+        class: "bg-pink-500 text-white px-3 py-1 rounded text-sm" %>
+
+      <%= link_to "Cancel",
+        admin_product_path(product),
+        data: { turbo_frame: "product_name" },
+        class: "text-gray-500 text-sm" %>
+
+    </div>
+
+  <% end %>
+
+<% else %>
+
+  <!-- VIEW MODE -->
+  <div class="flex justify-between items-center group">
+
+    <div>
+      <p class="text-sm text-gray-500">Name</p>
+      <p class="text-lg font-semibold"><%= product.name %></p>
+    </div>
+
+    <%= link_to admin_product_path(product, field: "name"),
+      data: { turbo_frame: "product_name" },
+      class: "opacity-0 group-hover:opacity-100 transition text-gray-400 hover:text-pink-500" do %>
+      ✏️
+    <% end %>
+
+  </div>
+
+<% end %>

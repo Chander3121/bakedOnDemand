@@ -1,9 +1,8 @@
 <div class="bg-white rounded-2xl shadow hover:shadow-lg transition duration-300 overflow-hidden">
   <!-- 🖼️ Image -->
   <div class="h-48 bg-gray-100 overflow-hidden">
-    <% if true #product.images.attached? %>
-      <%#= image_tag product.images.first, class: "w-full h-full object-cover hover:scale-105 transition duration-300" %>
-      <%= image_tag "#{product.name.parameterize}.jpg", class: "w-full h-full object-cover hover:scale-105 transition duration-300" %>
+    <% if product.images.attached? %>
+      <%= image_tag product.images.first, class: "w-full h-full object-cover hover:scale-105 transition duration-300" %>
     <% else %>
       <div class="flex items-center justify-center h-full text-gray-400">
         No Image
