@@ -69,7 +69,7 @@ gem "devise", "~> 5.0"
 
 gem "jwt", "~> 3.1"
 
-gem "graphql", "~> 2.5"
+gem "graphql", "~> 2.6"
 gem "graphiql-rails", group: :development
 
 gem "tailwindcss-rails", "~> 4.4"
