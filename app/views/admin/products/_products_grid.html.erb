@@ -24,7 +24,7 @@
         </div>
 
         <div class="flex justify-between mt-4">
-          <%= link_to "Edit", edit_admin_product_path(product), class: "text-blue-600 text-sm" %>
+          <%= link_to "Edit", edit_admin_product_path(product), data: { turbo: false }, class: "text-blue-600 text-sm" %>
           <%= link_to "Delete", admin_product_path(product), method: :delete, class: "text-red-500 text-sm" %>
         </div>
       </div>

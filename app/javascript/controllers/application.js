@@ -48,3 +48,25 @@ document.addEventListener("change", function (e) {
     })
   }
 })
+
+document.addEventListener("turbo:load", () => {
+  const input = document.getElementById("globalSearch")
+  if (!input) return
+
+  let timeout
+
+  input.addEventListener("input", () => {
+    clearTimeout(timeout)
+
+    timeout = setTimeout(() => {
+      input.form.requestSubmit()
+    }, 500)
+  })
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      clearTimeout(timeout)
+      input.form.requestSubmit()
+    }
+  })
+})

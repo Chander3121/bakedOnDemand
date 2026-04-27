@@ -1,25 +1,43 @@
-<div class="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-10">
+<div class="max-w-7xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-10">
 
   <!-- 🧾 Address -->
   <div>
-    <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
+    <h2 class="font-semibold mb-4">Choose or Add Address</h2>
 
-    <%= form_with url: checkout_path do %>
+    <%= form_with url: checkout_path, method: :post do %>
 
-      <div class="space-y-4">
-        <input name="name" placeholder="Full Name"
-          class="w-full border p-3 rounded-xl">
+      <!-- Saved addresses -->
+      <div class="space-y-4 mb-6">
+        <% current_user.addresses.each do |address| %>
 
-        <input name="phone" placeholder="Phone Number"
-          class="w-full border p-3 rounded-xl">
+          <label class="block border p-4 rounded-xl cursor-pointer">
+            <%= radio_button_tag :address_id, address.id %>
 
-        <textarea name="address" placeholder="Full Address"
-          class="w-full border p-3 rounded-xl"></textarea>
+            <div class="ml-2">
+              <p class="font-medium"><%= address.name %></p>
+              <p class="text-sm text-gray-500">
+                <%= address.line1 %>, <%= address.city %>
+              </p>
+            </div>
+          </label>
+
+        <% end %>
       </div>
 
-      <button class="mt-6 w-full bg-pink-500 text-white py-3 rounded-xl">
-        Continue to Payment →
-      </button>
+      <!-- Add new address -->
+      <h3 class="font-semibold mb-2">Add New Address</h3>
+
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <%= text_field_tag "address[name]", nil, placeholder: "Name", class: "w-full border p-3 rounded-xl" %>
+        <%= text_field_tag "address[phone]", nil, placeholder: "Phone", class: "w-full border p-3 rounded-xl" %>
+        <%= text_field_tag "address[line1]", nil, placeholder: "Address", class: "w-full border p-3 rounded-xl col-span-2" %>
+        <%= text_field_tag "address[city]", nil, placeholder: "City", class: "w-full border p-3 rounded-xl" %>
+        <%= text_field_tag "address[state]", nil, placeholder: "State", class: "w-full border p-3 rounded-xl" %>
+        <%= text_field_tag "address[pincode]", nil, placeholder: "Pincode", class: "w-full border p-3 rounded-xl col-span-2" %>
+      </div>
+
+      <%= submit_tag "Continue to Payment →",
+        class: "mt-6 w-full bg-pink-500 text-white py-3 rounded-xl" %>
 
     <% end %>
   </div>

@@ -44,6 +44,83 @@
     </div>
   </div>
 
+  <!-- 📦 Recent Orders -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+    <div class="flex justify-between items-center mb-5">
+      <h2 class="font-semibold text-lg">Recent Orders</h2>
+
+      <%= link_to "View all", admin_orders_path,
+        class: "text-sm text-pink-500 hover:underline" %>
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-gray-100">
+      <table class="w-full text-sm">
+        <!-- Header -->
+        <thead class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+          <tr>
+            <th class="px-4 py-3 text-left">Order</th>
+            <th class="px-4 py-3 text-left">Customer</th>
+            <th class="px-4 py-3 text-left">Status</th>
+            <th class="px-4 py-3 text-center">Date</th>
+            <th class="px-4 py-3 text-right">Total</th>
+          </tr>
+        </thead>
+
+        <!-- Body -->
+        <tbody class="divide-y">
+
+          <% @recent_orders.each do |order| %>
+
+            <% status_class =
+              case order.status
+              when "pending" then "bg-yellow-100 text-yellow-700"
+              when "confirmed" then "bg-blue-100 text-blue-700"
+              when "out_for_delivery" then "bg-purple-100 text-purple-700"
+              when "delivered" then "bg-green-100 text-green-700"
+              when "cancelled" then "bg-red-100 text-red-700"
+              end %>
+
+            <tr class="hover:bg-gray-50 transition cursor-pointer"
+                onclick="window.location='<%= admin_order_path(order) %>'">
+
+              <!-- Order ID -->
+              <td class="px-4 py-4 font-medium text-gray-800">
+                #<%= order.id %>
+              </td>
+
+              <!-- Customer -->
+              <td class="px-4 py-4">
+                <p class="font-medium"><%= order.name %></p>
+                <p class="text-xs text-gray-400">Customer</p>
+              </td>
+
+              <!-- Status -->
+              <td class="px-4 py-4">
+                <span class="px-3 py-1 rounded-full text-xs font-medium <%= status_class %>">
+                  <%= order.status.humanize %>
+                </span>
+              </td>
+
+              <!-- Date -->
+              <td class="px-4 py-4 text-center">
+                <p class="text-xs text-gray-400">
+                  <%= order.created_at.strftime("%d %B %Y") %>
+                </p>
+              </td>
+
+              <!-- Total -->
+              <td class="px-4 py-4 text-right font-semibold text-green-600">
+                ₹<%= order.total_amount %>
+              </td>
+
+            </tr>
+
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- 📊 Charts -->
   <div class="grid md:grid-cols-2 gap-8 mb-10">
 
@@ -87,32 +164,5 @@
           <div class="h-40 bg-gray-200 rounded"></div>
         </div>
       <% end %>
-  </div>
-
-  <!-- 📦 Recent Orders -->
-  <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-    <h2 class="font-semibold mb-4">Recent Orders</h2>
-
-    <table class="w-full text-sm">
-      <thead>
-        <tr class="text-gray-500">
-          <th>ID</th>
-          <th>Name</th>
-          <th>Status</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @recent_orders.each do |order| %>
-          <tr class="border-t">
-            <td>#<%= order.id %></td>
-            <td><%= order.name %></td>
-            <td><%= order.status %></td>
-            <td>₹<%= order.total_amount %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
   </div>
 </div>

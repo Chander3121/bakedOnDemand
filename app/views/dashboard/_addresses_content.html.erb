@@ -1,0 +1,15 @@
+<div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+
+  <h2 class="text-lg font-semibold mb-4">Addresses</h2>
+
+  <% if @addresses.any? %>
+    <% @addresses.each do |address| %>
+      <div class="border rounded-xl p-4 mb-3">
+        <p><%= address.full_address %></p>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-gray-400">No addresses saved</p>
+  <% end %>
+
+</div>

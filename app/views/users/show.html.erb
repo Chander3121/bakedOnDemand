@@ -1,0 +1,55 @@
+<div class="max-w-3xl mx-auto px-4 py-10">
+
+  <!-- HEADER -->
+  <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8 flex items-center gap-4">
+
+    <!-- Avatar -->
+    <div class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center text-xl font-bold text-pink-600">
+      <%= @user.email.first.upcase %>
+    </div>
+
+    <!-- Info -->
+    <div>
+      <h1 class="text-xl font-semibold">
+        <%= @user.email %>
+      </h1>
+      <p class="text-sm text-gray-500">
+        Member since <%= @user.created_at.strftime("%b %Y") %>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- DETAILS -->
+  <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 space-y-6">
+
+    <!-- Email -->
+    <div>
+      <p class="text-sm text-gray-500">Email</p>
+      <p class="font-medium"><%= @user.email %></p>
+    </div>
+
+    <!-- Phone -->
+    <div>
+      <p class="text-sm text-gray-500">Phone</p>
+      <p class="font-medium">
+        <%= @user.phone.presence || "Not added" %>
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-3 pt-4">
+
+      <%= link_to "Edit Profile",
+        edit_user_registration_path,
+        class: "bg-pink-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-pink-600" %>
+
+      <%= link_to "Change Password",
+        edit_user_registration_path,
+        class: "text-sm text-gray-600 hover:underline" %>
+
+    </div>
+
+  </div>
+
+</div>

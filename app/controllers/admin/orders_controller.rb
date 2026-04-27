@@ -1,8 +1,7 @@
 class Admin::OrdersController < Admin::BaseController
-  before_action :require_admin!
 
   def index
-    @orders = Order.order("#{sort_column} #{sort_direction}").page(params[:page]).per(1)
+    @orders = Order.order("#{sort_column} #{sort_direction}").page(params[:page]).per(15)
   end
 
   def show

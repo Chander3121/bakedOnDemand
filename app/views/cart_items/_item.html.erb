@@ -10,7 +10,7 @@
   </div>
 
   <div class="flex-1">
-    <h2 class="font-semibold"><%= product.name %></h2>
+    <h2 class="font-semibold"><%= link_to product.name, product_path(product), class: "hover:text-pink-600"%></h2>
     <p class="text-sm text-gray-500"><%= variant.size %></p>
     <p class="text-green-600 font-bold">₹<%= variant.price %></p>
   </div>

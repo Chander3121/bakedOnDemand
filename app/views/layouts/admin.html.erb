@@ -56,8 +56,16 @@
           </nav>
         </div>
 
-        <div class="text-sm text-gray-500">
+        <div class="text-sm text-gray-500 flex justify-between">
           Admin Panel
+          <%= link_to destroy_user_session_path, class: "text-pink-500 flex items-center", data: { turbo_method: :delete } do %>
+            Logout
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+              <path d="M17 16l4-4m0 0l-4-4m4 4H7"/>
+            </svg>
+          <% end %>
+
         </div>
       </aside>
 

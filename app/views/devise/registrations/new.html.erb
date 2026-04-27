@@ -1,0 +1,75 @@
+<div class="min-h-screen grid md:grid-cols-2">
+
+  <!-- 🍩 LEFT SIDE -->
+  <div class="hidden md:flex flex-col justify-center items-center bg-pink-50 p-10">
+
+    <div class="text-5xl mb-4">🧁</div>
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-3">
+      Join BakesOnDemand
+    </h1>
+
+    <p class="text-gray-500 text-center max-w-sm">
+      Create your account and enjoy fresh bakery treats anytime.
+    </p>
+
+  </div>
+
+  <!-- 📝 RIGHT SIDE -->
+  <div class="flex items-center justify-center px-6 py-10">
+
+    <div class="w-full max-w-md">
+
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">
+        Create an account
+      </h2>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <%= f.label :email, class: "text-sm text-gray-600" %>
+          <%= f.email_field :email,
+            class: "w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-300 outline-none" %>
+        </div>
+
+        <!-- Phone -->
+        <div class="mb-4">
+          <%= f.label :phone, class: "text-sm text-gray-600" %>
+          <%= f.text_field :phone,
+            class: "w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-300 outline-none" %>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <%= f.label :password, class: "text-sm text-gray-600" %>
+          <%= f.password_field :password,
+            class: "w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-300 outline-none" %>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-6">
+          <%= f.label :password_confirmation, class: "text-sm text-gray-600" %>
+          <%= f.password_field :password_confirmation,
+            class: "w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-pink-300 outline-none" %>
+        </div>
+
+        <!-- Submit -->
+        <%= f.submit "Create Account",
+          class: "w-full bg-pink-500 hover:bg-pink-600 text-white py-2.5 rounded-lg font-medium transition" %>
+
+      <% end %>
+
+      <!-- Links -->
+      <p class="text-sm text-center mt-5 text-gray-500">
+        Already have an account?
+        <%= link_to "Login",
+          new_session_path(resource_name),
+          class: "text-pink-500 font-medium hover:underline" %>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>

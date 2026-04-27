@@ -1,7 +1,7 @@
 <div class="bg-[#fffaf7]">
 
   <!-- 🌟 HERO -->
-  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center reveal reveal-stagger" data-controller="reveal">
 
     <!-- LEFT -->
     <div>
@@ -16,23 +16,23 @@
 
       <div class="flex items-center gap-4">
         <%= link_to "Shop Now", products_path,
-          class: "bg-pink-500 hover:bg-pink-600 text-white px-7 py-3 rounded-xl font-semibold shadow-md" %>
+          class: "bg-pink-500 hover:bg-pink-600 text-white px-7 py-3 rounded-xl font-semibold shadow-md transition hover:scale-105 active:scale-95" %>
 
         <%= link_to "Explore Menu", products_path,
-          class: "px-7 py-3 rounded-xl border border-gray-300 hover:bg-white font-medium" %>
+          class: "px-7 py-3 rounded-xl border border-gray-300 hover:bg-white font-medium shadow-md transition hover:scale-105 active:scale-95" %>
       </div>
     </div>
 
     <!-- RIGHT -->
     <div class="flex justify-center">
       <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?q=80&w=1200"
-           class="rounded-3xl shadow-xl w-96 h-96 object-cover">
+           class="rounded-3xl shadow-xl w-96 h-96 object-cover hover:scale-105 transition duration-500">
     </div>
 
   </section>
 
   <!-- ✨ TRUST -->
-  <section class="bg-white">
+  <section class="bg-white reveal reveal-stagger" data-controller="reveal">
     <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
 
       <div>
@@ -59,30 +59,35 @@
   </section>
 
   <!-- 🧁 CATEGORIES -->
-  <section class="max-w-7xl mx-auto px-6 py-20">
+  <section class="max-w-7xl mx-auto px-6 py-20 reveal reveal-stagger" data-controller="reveal">
 
     <h2 class="text-3xl font-bold mb-10">Explore Categories</h2>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
 
-      <% [
-        {name: "Cakes", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587"},
-        {name: "Pastries", img: "https://images.unsplash.com/photo-1559620192-032c4bc4674e"},
-        {name: "Cookies", img: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e"},
-        {name: "Breads", img: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec"}
-      ].each do |cat| %>
+      <% Category.limit(4).offset(1).each do |category| %>
 
-        <div class="bg-white rounded-2xl overflow-hidden shadow hover:shadow-lg transition">
+        <%= link_to products_path(category_id: category.id),
+            class: "group block bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition duration-300 hover:-translate-y-1" do %>
 
-          <div class="h-44">
-            <img src="<%= cat[:img] %>" class="w-full h-full object-cover">
+          <!-- 🖼️ Image -->
+          <div class="h-44 overflow-hidden">
+            <% if category.image.attached? %>
+              <%= image_tag category.image.variant(resize_to_fill: [400, 300]), class: "w-full h-full object-cover group-hover:scale-105 transition duration-300" %>
+            <% else %>
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587"
+                   class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+            <% end %>
           </div>
 
+          <!-- 🏷️ Name -->
           <div class="py-4 text-center">
-            <h3 class="font-semibold text-lg"><%= cat[:name] %></h3>
+            <h3 class="font-semibold text-lg group-hover:text-pink-500 transition">
+              <%= category.name %>
+            </h3>
           </div>
 
-        </div>
+        <% end %>
 
       <% end %>
 
@@ -90,8 +95,155 @@
 
   </section>
 
+  <%# Best Seller section %>
+  <section class="max-w-7xl mx-auto px-6 py-20 reveal reveal-stagger" data-controller="reveal">
+
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-3xl font-bold">Bestsellers</h2>
+
+      <%= link_to "View All", products_path(tag_ids: Tag.find_by(name: "Bestseller")&.id),
+        class: "text-sm text-pink-500 hover:underline" %>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <% Product.joins(:tags).where(tags: { name: "Bestseller" }).limit(4).each do |product| %>
+        <%= render "products/product_card", product: product %>
+      <% end %>
+    </div>
+
+  </section>
+
+  <%# Premium Occasions + CTA Section %>
+  <section class="bg-gradient-to-br from-pink-50 via-white to-pink-100 py-24 reveal reveal-stagger" data-controller="reveal">
+
+    <div class="max-w-7xl mx-auto px-6 text-center">
+
+      <h2 class="text-4xl font-bold text-gray-800 mb-4">
+        Celebrate Every Moment in Style ✨
+      </h2>
+
+      <p class="text-gray-500 mb-12 max-w-2xl mx-auto">
+        Discover handcrafted cakes and desserts designed to make your special occasions truly unforgettable.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+
+        <% [
+          {name: "Birthday", emoji: "🎂"},
+          {name: "Anniversary", emoji: "💍"},
+          {name: "Party", emoji: "🥳"},
+          {name: "Festivals", emoji: "🎊"}
+        ].each do |item| %>
+
+          <%= link_to products_path(query: item[:name]),
+            class: "group bg-white/70 backdrop-blur-md hover:bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-xl transition-all duration-300 border border-pink-100" do %>
+
+            <div class="text-4xl mb-3 transform group-hover:scale-110 transition">
+              <%= item[:emoji] %>
+            </div>
+
+            <p class="font-semibold text-gray-700 group-hover:text-pink-500">
+              <%= item[:name] %>
+            </p>
+
+          <% end %>
+
+        <% end %>
+
+      </div>
+
+      <div class="bg-pink-500 text-white rounded-3xl py-12 px-6 shadow-xl">
+
+        <h3 class="text-2xl md:text-3xl font-semibold mb-4">
+          Make Every Occasion Sweeter 🍰
+        </h3>
+
+        <p class="text-pink-100 mb-6 max-w-xl mx-auto">
+          Order your favorite desserts today and experience freshness, elegance, and taste in every bite.
+        </p>
+
+        <%= link_to "Explore Collection", products_path,
+          class: "inline-block bg-white text-pink-500 px-10 py-3 rounded-xl font-semibold hover:bg-gray-100 shadow-md transition hover:scale-105 active:scale-95" %>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <%# Instagram style gallery section %>
+  <section class="max-w-7xl mx-auto px-6 py-20 reveal reveal-stagger" data-controller="reveal">
+
+    <h2 class="text-3xl font-bold mb-10 text-center">
+      📸 Fresh from Our Kitchen
+    </h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+
+      <% 6.times do %>
+        <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e"
+             class="rounded-xl object-cover h-32 w-full hover:scale-105 transition">
+      <% end %>
+
+    </div>
+
+  </section>
+
+  <%# custom cake CTA section %>
+  <section class="max-w-7xl mx-auto px-6 py-20 reveal reveal-stagger" data-controller="reveal">
+
+    <div class="bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-3xl p-10 flex flex-col md:flex-row items-center justify-between">
+
+      <div>
+        <h2 class="text-2xl font-bold mb-2">
+          🎨 Want a Custom Cake?
+        </h2>
+        <p class="text-pink-100">
+          Design your own cake for special moments — we’ll make it real.
+        </p>
+      </div>
+
+      <%= link_to "Customize Now", "#",
+        class: "mt-4 md:mt-0 bg-white text-pink-500 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 shadow-md transition hover:scale-105 active:scale-95" %>
+
+    </div>
+
+  </section>
+
+  <%# How it works section %>
+  <section class="bg-white py-20 reveal reveal-stagger" data-controller="reveal">
+
+    <div class="max-w-6xl mx-auto px-6 text-center">
+
+      <h2 class="text-3xl font-bold mb-10">
+        How It Works
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <div>
+          <div class="text-3xl mb-2">🛒</div>
+          <p class="font-semibold">Choose Your Treat</p>
+        </div>
+
+        <div>
+          <div class="text-3xl mb-2">👩‍🍳</div>
+          <p class="font-semibold">We Bake Fresh</p>
+        </div>
+
+        <div>
+          <div class="text-3xl mb-2">🚚</div>
+          <p class="font-semibold">Delivered to You</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
   <!-- 🌿 HEALTH -->
-  <section class="bg-pink-50 py-20">
+  <section class="bg-pink-50 py-20 reveal reveal-stagger" data-controller="reveal">
     <div class="max-w-4xl mx-auto text-center px-6">
 
       <h2 class="text-2xl font-bold mb-4">
@@ -106,7 +258,7 @@
   </section>
 
   <!-- 💬 TESTIMONIALS -->
-  <section class="max-w-6xl mx-auto px-6 py-20">
+  <section class="max-w-6xl mx-auto px-6 py-20 reveal reveal-stagger" data-controller="reveal">
 
     <h2 class="text-2xl font-bold text-center mb-10">
       Loved by Customers ❤️
@@ -132,18 +284,32 @@
   </section>
 
   <!-- 🚀 CTA -->
-  <section class="bg-pink-500 text-white py-16 text-center">
+  
 
-    <h2 class="text-3xl font-bold mb-4">
-      Make Every Occasion Sweeter 🍰
-    </h2>
+  <%# News letter section %>
+  <section class="bg-gray-50 py-20 reveal reveal-stagger" data-controller="reveal">
 
-    <p class="mb-6 text-pink-100">
-      Order your favorite desserts today and enjoy freshness like never before.
-    </p>
+    <div class="max-w-xl mx-auto text-center px-6">
 
-    <%= link_to "Order Now", products_path,
-      class: "bg-white text-pink-500 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100" %>
+      <h2 class="text-2xl font-bold mb-3">
+        🎁 Get Sweet Deals
+      </h2>
+
+      <p class="text-gray-600 mb-6">
+        Subscribe and get exclusive offers & discounts.
+      </p>
+
+      <form class="flex gap-2">
+        <input type="email"
+          placeholder="Enter your email"
+          class="flex-1 border rounded-xl px-4 py-2">
+
+        <button class="bg-pink-500 text-white px-5 rounded-xl shadow-md transition hover:scale-105 active:scale-95">
+          Subscribe
+        </button>
+      </form>
+
+    </div>
 
   </section>
 

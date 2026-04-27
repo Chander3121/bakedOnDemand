@@ -1,0 +1,9 @@
+<%= render partial: "product_card", collection: products, as: :product %>
+
+<% if products.size == 12 %>
+  <div data-controller="infinite-scroll"
+       data-infinite-scroll-url-value="<%= products_path(request.query_parameters.merge(offset: params[:offset].to_i + 12)) %>"
+       class="h-10 flex items-center justify-center text-gray-400 text-sm">
+    Loading more...
+  </div>
+<% end %>

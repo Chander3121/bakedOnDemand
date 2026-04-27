@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  get "orders/success"
-  get "payments/show"
-  get "payments/verify"
-  get "checkouts/new"
-  get "checkouts/create"
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
@@ -22,6 +17,14 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "welcome#landing_page"
 
+  get "/profile", to: "users#show"
+
+  resource :dashboard, only: [:show], controller: "dashboard" do
+    get :profile
+    get :orders
+    get :addresses
+  end
+
   resources :products
   get "cakes", to: "products#cakes", as: :cakes
   get "pastries", to: "products#pastries", as: :pastries
@@ -38,6 +41,8 @@ Rails.application.routes.draw do
       get :success
     end
   end
+  get "/track-order", to: "orders#track"
+  post "/track-order", to: "orders#find"
 
   # Admin routes starts here
   namespace :admin do

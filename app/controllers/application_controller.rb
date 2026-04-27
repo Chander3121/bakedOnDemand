@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   stale_when_importmap_changes
 
   before_action :authenticate_user!
+  before_action :store_user_location!, if: :storable_location?
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
 
   def current_cart
     if session[:cart_id]
@@ -25,5 +28,26 @@ class ApplicationController < ActionController::Base
 
   def require_admin!
     redirect_to root_path, alert: "Not authorized" unless current_user&.admin?
+  end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || checkout_path
+  end
+
+  def after_sign_up_path_for(resource)
+    stored_location_for(resource) || checkout_path
+  end
+
+  def store_user_location!
+    store_location_for(:user, params[:return_to]) if params[:return_to].present?
+  end
+
+  def storable_location?
+    request.get? && is_navigational_format?
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:phone])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:phone])
   end
 end

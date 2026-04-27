@@ -36,9 +36,9 @@
     <h2 class="text-xl font-semibold mb-3">Delivery Address</h2>
 
     <div class="bg-white p-4 rounded-xl shadow-sm text-sm text-gray-700">
-      <p class="font-semibold"><%= @order.name %></p>
-      <p><%= @order.phone %></p>
-      <p><%= @order.address %></p>
+      <p class="font-semibold"><%= @order.address.name %></p>
+      <p><%= @order.address.phone %></p>
+      <p><%= @order.address.full_address %></p>
     </div>
 
   </div>

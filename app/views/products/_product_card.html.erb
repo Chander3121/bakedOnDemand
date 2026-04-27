@@ -62,13 +62,7 @@
         cart_items_path(product_variant_id: variant.id, quantity: 1),
         method: :post,
         form: { data: { turbo_stream: true } },
-        class: "bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-1 rounded-full" %>
-
-      <%#= button_to "Add",
-        cart_items_path(product_variant_id: product.product_variants.first.id),
-        method: :post,
-        class: "bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-1 rounded-full" %>
+        class: "bg-pink-500 hover:bg-pink-600 text-white text-sm px-4 py-1 rounded-full shadow-md transition hover:scale-105 active:scale-95" %>
     </div>
-
   </div>
 </div>

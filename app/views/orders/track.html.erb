@@ -1,0 +1,8 @@
+<h1>Track Your Order</h1>
+
+<%= form_with url: track_order_path, method: :post do |f| %>
+  <%= text_field_tag :order_id, nil, placeholder: "Order ID" %>
+  <%= text_field_tag :phone, nil, placeholder: "Phone Number" %>
+
+  <%= submit_tag "Track Order" %>
+<% end %>

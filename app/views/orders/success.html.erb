@@ -1,53 +1,147 @@
-<div class="max-w-4xl mx-auto px-6 py-16 text-center">
+<div class="max-w-5xl mx-auto px-6 py-16">
 
-  <h1 class="text-3xl font-bold text-green-600 mb-4">
-    🎉 Order Confirmed!
-  </h1>
+  <!-- 🎉 HERO -->
+  <div class="text-center mb-12">
+    <div class="text-6xl mb-4 animate-bounce">🎉</div>
 
-  <p class="text-gray-600 mb-8">
-    Your delicious treats are being prepared 🍰
-  </p>
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+      Order Confirmed!
+    </h1>
 
-  <!-- 🧾 Order Info -->
-  <div class="bg-white p-6 rounded-2xl shadow mb-10 text-left">
-    <p><strong>Order ID:</strong> #<%= @order.id %></p>
-    <p><strong>Name:</strong> <%= @order.name %></p>
-    <p><strong>Phone:</strong> <%= @order.phone %></p>
-    <p><strong>Address:</strong> <%= @order.address %></p>
+    <p class="text-gray-500 text-lg">
+      Your delicious treats are being freshly prepared 🍰
+    </p>
   </div>
 
-  <!-- 🚚 DELIVERY TRACKER (PREMIUM) -->
-  <div class="bg-white p-8 rounded-3xl shadow-sm">
+  <!-- 🧾 ORDER SUMMARY -->
+  <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-10">
 
-    <h2 class="text-lg font-semibold mb-8 text-center">
-      Delivery Status
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="font-semibold text-lg">Order Details</h2>
+      <span class="text-sm text-gray-400">#<%= @order.id %></span>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 text-sm">
+
+      <div>
+        <p class="text-gray-500">Customer</p>
+        <p class="font-medium"><%= @order.address.name %></p>
+      </div>
+
+      <div>
+        <p class="text-gray-500">Phone</p>
+        <p class="font-medium"><%= @order.address.phone %></p>
+      </div>
+
+      <div class="md:col-span-2">
+        <p class="text-gray-500">Delivery Address</p>
+        <p class="font-medium"><%= @order.address.full_address %></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🛒 ORDER ITEMS -->
+  <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-10">
+
+    <h2 class="font-semibold text-lg mb-6">
+      Your Items
+    </h2>
+
+    <div class="space-y-4">
+
+      <% @order.order_items.each do |item| %>
+        <% product = item.product_variant.product %>
+
+        <div class="flex items-center gap-4 border-b pb-4 last:border-0 last:pb-0">
+
+          <!-- 🖼️ Image -->
+          <div class="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden">
+            <% if product.images.attached? %>
+              <%= image_tag product.images.first, class: "w-full h-full object-cover" %>
+            <% else %>
+              <div class="flex items-center justify-center h-full text-gray-400 text-xs">
+                No Image
+              </div>
+            <% end %>
+          </div>
+
+          <!-- 📦 Details -->
+          <div class="flex-1">
+            <p class="font-medium text-gray-800">
+              <%= product.name %>
+            </p>
+
+            <p class="text-xs text-gray-500">
+              <%= item.product_variant.size %>
+            </p>
+
+            <p class="text-xs text-gray-400 mt-1">
+              Qty: <%= item.quantity %>
+            </p>
+          </div>
+
+          <!-- 💰 Price -->
+          <div class="text-right">
+            <p class="font-semibold text-gray-800">
+              ₹<%= item.price * item.quantity %>
+            </p>
+
+            <p class="text-xs text-gray-400">
+              ₹<%= item.price %> each
+            </p>
+          </div>
+
+        </div>
+      <% end %>
+
+    </div>
+
+    <!-- 🧾 TOTAL -->
+    <div class="flex justify-between items-center mt-6 pt-4 border-t">
+
+      <p class="font-medium text-gray-600">Total</p>
+
+      <p class="text-lg font-bold text-green-600">
+        ₹<%= @order.total_amount %>
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- 🚚 DELIVERY TRACKER -->
+  <div class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl shadow-sm border border-gray-100">
+
+    <h2 class="text-lg font-semibold mb-10 text-center">
+      🚚 Delivery Progress
     </h2>
 
     <% steps = ["Order Placed", "Preparing", "Out for Delivery", "Delivered"] %>
-    <% current_step = 1 %> <%# change dynamically later %>
+    <% current_step = 1 %> <%# dynamic later %>
 
     <div class="relative">
 
-      <!-- 🔗 Progress Line (background) -->
-      <div class="absolute top-4 left-0 w-full h-1 bg-gray-200 rounded"></div>
+      <!-- Background line -->
+      <div class="absolute top-5 left-0 w-full h-1 bg-gray-200 rounded"></div>
 
-      <!-- 🔗 Active Progress -->
-      <div class="absolute top-4 left-0 h-1 bg-green-500 rounded transition-all"
+      <!-- Active line -->
+      <div class="absolute top-5 left-0 h-1 bg-gradient-to-r from-green-400 to-green-600 rounded transition-all duration-500"
            style="width: <%= (current_step.to_f / (steps.length - 1)) * 100 %>%">
       </div>
 
-      <!-- Steps -->
       <div class="relative flex justify-between">
 
         <% steps.each_with_index do |step, index| %>
           <div class="flex flex-col items-center text-center w-full">
 
             <!-- Circle -->
-            <div class="z-10 w-10 h-10 flex items-center justify-center rounded-full border-2
+            <div class="z-10 w-12 h-12 flex items-center justify-center rounded-full border-2 text-sm font-semibold
               <%= if index < current_step
-                    "bg-green-500 border-green-500 text-white"
+                    "bg-green-500 border-green-500 text-white shadow"
                   elsif index == current_step
-                    "bg-white border-green-500 text-green-500"
+                    "bg-white border-green-500 text-green-600 shadow"
                   else
                     "bg-white border-gray-300 text-gray-400"
                   end %>">
@@ -68,14 +162,21 @@
 
           </div>
         <% end %>
+
       </div>
     </div>
+
   </div>
 
-  <!-- CTA -->
-  <div class="mt-10">
+  <!-- ✨ CTA SECTION -->
+  <div class="mt-12 flex flex-col md:flex-row justify-center gap-4">
+
     <%= link_to "Continue Shopping", products_path,
-      class: "bg-pink-500 text-white px-6 py-3 rounded-xl" %>
+      class: "bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl font-medium transition shadow-sm" %>
+
+    <%= link_to "View My Orders", orders_path,
+      class: "border border-gray-300 hover:border-gray-400 px-6 py-3 rounded-xl font-medium text-gray-700 transition" %>
+
   </div>
 
 </div>

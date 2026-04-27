@@ -1,5 +1,4 @@
 class CheckoutsController < ApplicationController
-  skip_before_action :authenticate_user!
 
   def new
     @cart = current_cart
@@ -24,11 +23,24 @@ class CheckoutsController < ApplicationController
         end
       end
 
+      if user_signed_in?
+        address =
+          if params[:address_id].present?
+            current_user.addresses.find(params[:address_id])
+          else
+            current_user.addresses.create!(address_params)
+          end
+      else
+        # 👇 Guest address (NOT saved in DB)
+        address = Address.new(address_params)
+      end
+
       # 🧾 Create order AFTER validation
       order = Order.create!(
+        user: current_user,   # ✅ THIS LINE ADDED
         name: params[:name],
         phone: params[:phone],
-        address: params[:address],
+        address: address,
         status: "pending",
         payment_status: "unpaid",
         total_amount: calculate_total(cart),
@@ -66,6 +78,10 @@ class CheckoutsController < ApplicationController
   end
 
   private
+
+  def address_params
+    params.require(:address).permit(:name, :phone, :line1, :city, :state, :pincode)
+  end
 
   def calculate_total(cart)
     cart.cart_items.sum { |i| i.quantity * i.product_variant.price }
