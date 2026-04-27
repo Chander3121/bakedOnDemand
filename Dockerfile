@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ruby:3.3.0-slim
+FROM ruby:3.3.6-slim
 
 WORKDIR /app
 
