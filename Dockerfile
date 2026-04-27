@@ -20,8 +20,6 @@ COPY . .
 
 ENV RAILS_ENV=production
 
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
-
 EXPOSE 3000
 
-CMD ["bash", "-c", "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p $PORT"]
+CMD ["bash", "-c", "bundle exec rails db:prepare && bundle exec rails assets:precompile && bundle exec rails server -b 0.0.0.0 -p $PORT"]
