@@ -13,8 +13,12 @@ A **full-stack bakery e-commerce platform** built with Ruby on Rails, featuring 
 
 ## 🎬 Demo
 
-🔗 **Live Demo:** https://your-demo-link.com
-📽️ **Video Walkthrough:** https://your-video-link.com  
+🔗 **Live Demo:** 
+- https://tinyurl.com/y4hya7ya
+
+
+📽️ **Video Walkthrough:**
+[![Watch Demo](https://drive.google.com/uc?export=view&id=1IczBmsNMpJhlo_CfjCBjqAPD5lZ2fVZe)](https://drive.google.com/file/d/1rWyv7Psf3Y3-v9NK6Zi0Qrl1Npk_U0mX/view?usp=drive_link)
 
 ---
 
@@ -22,17 +26,17 @@ A **full-stack bakery e-commerce platform** built with Ruby on Rails, featuring 
 ## 📸 Screenshots
 
 ### 🏠 Landing Page
-![Landing](https://drive.google.com/file/d/168MNeNjoGeai2IddUy1iJFYV_2ow9YEL/view?usp=drive_link)
+![Landing](https://drive.google.com/uc?export=view&id=1IczBmsNMpJhlo_CfjCBjqAPD5lZ2fVZe)
 
 
 ### 🛍️ Products Page (Filters + Search)
-![Products](docs/screenshots/products.png)
+![Products](https://drive.google.com/uc?export=view&id=1MGqQebXO-Z9OrSmiOATQR3fTfc1pfSKR)
 
 ### 🧑‍💼 Admin Dashboard
-![Admin](docs/screenshots/admin.png)
+![Admin](https://drive.google.com/uc?export=view&id=1O0-0qqtTZ8J5xtY1R-i5LsBr0Qf8a04r)
 
-### 👤 User Dashboard
-![Dashboard](docs/screenshots/user_dashboard.png)
+### 🛒 Cart Page
+![Dashboard](https://drive.google.com/uc?export=view&id=1oJA2pToNbnM0mnC-HCDSIPLDRQ8E1M36)
 
 ---
 
