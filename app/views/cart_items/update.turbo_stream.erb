@@ -1,10 +1,30 @@
-<%= turbo_stream.replace "cart_item_#{@item.id}", partial: "cart_items/item", locals: { item: @item } if @item.persisted? %>
+<%# 🔥 REMOVE ITEM IF DESTROYED %>
+<% if @item.destroyed? %>
+  <%= turbo_stream.replace "cart_item_#{@item.id}" do %>
+    <div class="fade-out h-24"></div>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "cart_item_#{@item.id}" do %>
+    <%= render "cart_items/item", item: @item %>
+  <% end %>
+<% end %>
 
+<%# 🔄 UPDATE SUMMARY %>
 <%= turbo_stream.replace "cart_summary", partial: "carts/summary", locals: { cart: @cart } %>
 
+<%# 🛒 UPDATE CART COUNT %>
 <%= turbo_stream.replace "cart_count" do %>
   <span id="cart_count"
+        data-controller="cart-bump"
         class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs px-1.5 rounded-full">
     <%= cart_count %>
   </span>
+<% end %>
+
+<% if @cart.cart_items.empty? %>
+
+  <%= turbo_stream.replace "cart_container" do %>
+    <%= render "carts/cart", cart: @cart %>
+  <% end %>
+
 <% end %>

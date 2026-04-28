@@ -1,0 +1,36 @@
+<turbo-frame id="cart_container">
+
+  <div class="max-w-7xl mx-auto px-6 py-12">
+
+    <h1 class="text-3xl font-bold mb-8">🛒 Your Cart</h1>
+
+    <% if @cart.cart_items.any? %>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- ITEMS -->
+        <div id="cart_items" class="md:col-span-2 space-y-6">
+          <% @cart.cart_items.each do |item| %>
+            <%= render "cart_items/item", item: item %>
+          <% end %>
+        </div>
+
+        <!-- SUMMARY -->
+        <div id="cart_summary">
+          <%= render "carts/summary", cart: @cart %>
+        </div>
+
+      </div>
+
+    <% else %>
+
+      <div id="empty_cart" class="text-center py-20 fade-in">
+        <p class="text-gray-500 mb-4">Your cart is empty 😢</p>
+        <%= link_to "Browse Products", products_path, data: { turbo: false }, class: "bg-pink-500 text-white px-6 py-2 rounded-xl" %>
+      </div>
+
+    <% end %>
+
+  </div>
+
+</turbo-frame>

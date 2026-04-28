@@ -179,12 +179,19 @@
     </h2>
 
     <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+      <% cat_images = [
+        "https://www.foodandwine.com/thmb/cUck29eCdcIEjx_r5Q5ReugKoNM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Fraiser-cake-FT-RECIPES0624-e9972b38ccb54d3ca8edbbb9a5bb1642.jpeg",
+        "https://www.warmoven.in/cdn/shop/files/duel-delight-chocolate_-cake.jpg",
+        "https://images.arla.com/recordid/800751B7-5FFD-4169-800510DAA9989927/picture.jpg",
+        "https://www.foodnetwork.com/content/dam/images/food/fullset/2009/4/5/1/IG1C17_30946_s4x3.jpg",
+        "https://hips.hearstapps.com/hmg-prod/images/birthday-ice-cream-cake-recipe-2-648a1bb628204.jpg",
+        "https://www.foodandwine.com/thmb/aW2VhgYmhTt7W54PBw3UEVPbr5g=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/FW-HolidayDI_Site-LandingPageStoryCovers_RecipesForMashama-RedVelvetCakeWithCoconut-f25044b2466c4e35a5bed3d1be668dad.jpg"
+      ] %>
 
-      <% 6.times do %>
-        <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e"
+      <% cat_images.each do |img| %>
+        <img src="<%= img %>"
              class="rounded-xl object-cover h-32 w-full hover:scale-105 transition">
       <% end %>
-
     </div>
 
   </section>

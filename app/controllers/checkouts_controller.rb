@@ -19,7 +19,7 @@ class CheckoutsController < ApplicationController
         variant = variants.find { |v| v.id == item.product_variant_id }
 
         if item.quantity > variant.available_stock
-          raise ActiveRecord::Rollback, "Only #{variant.available_stock} left"
+          raise StandardError, "Only #{variant.available_stock} left"
         end
       end
 

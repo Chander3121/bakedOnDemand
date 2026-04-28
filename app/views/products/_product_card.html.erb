@@ -54,6 +54,7 @@
     <!-- Actions -->
     <div class="flex justify-between items-center">
       <%= link_to "View", product_path(product),
+        data: { turbo: false },
         class: "text-sm text-blue-600 hover:underline" %>
 
       <% variant = product.product_variants.first %>
