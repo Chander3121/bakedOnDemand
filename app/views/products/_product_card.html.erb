@@ -32,14 +32,53 @@
       <% end %>
     </div>
 
-    <!-- Price -->
-    <% if product.product_variants.any? %>
-      <% min_price = product.product_variants.minimum(:price) %>
-      <p class="text-green-600 font-bold text-lg mb-2">
-        ₹<%= min_price %>
-        <span class="text-sm text-gray-400 font-normal">onwards</span>
-      </p>
-    <% end %>
+    <div class="flex items-center justify-between my-3">
+      <!-- 💰 Price -->
+      <% if product.product_variants.any? %>
+        <% min_price = product.product_variants.minimum(:price) %>
+
+        <div class="flex flex-col">
+          <p class="text-green-600 font-bold text-xl leading-none">
+            ₹<%= min_price %>
+          </p>
+        </div>
+      <% end %>
+
+      <!-- ⭐ Rating -->
+      <%
+        avg_rating = product.average_rating
+
+        rating_color =
+          if avg_rating >= 4
+            "bg-green-600"
+          elsif avg_rating >= 3
+            "bg-yellow-500"
+          else
+            "bg-red-500"
+          end
+      %>
+
+      <div class="flex items-center gap-2">
+
+        <!-- ⭐ Badge -->
+        <div class="flex items-center gap-1
+                    <%= rating_color %>
+                    text-white px-2.5 py-1 rounded-lg
+                    text-xs font-semibold shadow-sm
+                    hover:scale-105 transition">
+
+          <span>
+            <%= number_with_precision(avg_rating, precision: 1) %>
+          </span>
+
+          <span class="text-[10px]">★</span>
+          <span class="text-[10px]"> | </span>
+          <span class="text-[10px]">
+            <%= format_count(product.reviews.count) %>
+          </span>
+        </div>
+      </div>
+    </div>
 
     <!-- Variants -->
     <div class="text-xs text-gray-500 mb-4">

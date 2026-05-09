@@ -25,7 +25,10 @@ Rails.application.routes.draw do
     get :addresses
   end
 
-  resources :products
+  resources :products do
+    resources :reviews, only: [:create]
+  end
+
   get "cakes", to: "products#cakes", as: :cakes
   get "pastries", to: "products#pastries", as: :pastries
 
@@ -44,7 +47,7 @@ Rails.application.routes.draw do
   get "/track-order", to: "orders#track"
   post "/track-order", to: "orders#find"
 
-  # Admin routes starts here
+  # ============================ Admin routes starts here ==================================
   namespace :admin do
     get "dashboard/index"
     root "dashboard#index"

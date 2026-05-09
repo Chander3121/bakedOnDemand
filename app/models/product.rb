@@ -6,6 +6,7 @@ class Product < ApplicationRecord
 
   has_many :product_tags, dependent: :destroy
   has_many :tags, through: :product_tags
+  has_many :reviews, dependent: :destroy
 
   has_many_attached :images
 
@@ -13,4 +14,8 @@ class Product < ApplicationRecord
   scope :by_category, ->(slug) {
     joins(:category).where(categories: { slug: slug })
   }
+
+  def average_rating
+    reviews.average(:rating)&.round(1) || 0
+  end
 end

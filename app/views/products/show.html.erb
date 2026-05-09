@@ -31,6 +31,25 @@
 
       <!-- Title -->
       <h1 class="text-3xl font-bold mb-2"><%= @product.name %></h1>
+      <div class="flex items-center gap-3 mb-3">
+
+        <!-- ⭐ Rating Pill -->
+        <div class="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded-full font-semibold text-sm shadow-sm">
+
+          <span>
+            <%= number_with_precision(@product.average_rating, precision: 1) %>
+          </span>
+
+          <span class="text-xs">★</span>
+
+        </div>
+
+        <!-- 📝 Reviews Count -->
+        <span class="text-gray-500 font-medium">
+          <%= format_count(@product.reviews.count) %> Reviews
+        </span>
+
+      </div>
 
       <!-- Tags -->
       <div class="flex gap-2 mb-4">
@@ -125,6 +144,87 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- ⭐ REVIEWS SECTION -->
+<div class="max-w-6xl mx-auto px-4 pb-16">
+
+  <!-- ⭐ Leave Review -->
+  <div class="bg-white p-6 rounded-2xl shadow-sm mt-10">
+
+    <h3 class="font-semibold mb-4">Leave a Review</h3>
+
+    <% if user_signed_in? %>
+
+      <%= form_with model: [@product, Review.new], local: true do |f| %>
+
+        <!-- ⭐ Stars -->
+        <div class="flex gap-2 mb-4">
+          <% (1..5).each do |i| %>
+            <label>
+              <%= f.radio_button :rating, i, class: "hidden peer" %>
+              <span class="text-2xl cursor-pointer peer-checked:text-yellow-400 text-gray-300 hover:text-yellow-400 transition">
+                ★
+              </span>
+            </label>
+          <% end %>
+        </div>
+
+        <!-- 💬 Comment -->
+        <%= f.text_area :comment,
+          placeholder: "Write your review...",
+          class: "w-full border rounded-xl p-3 mb-4" %>
+
+        <%= f.submit "Submit Review",
+          class: "bg-pink-500 text-white px-4 py-2 rounded-xl hover:bg-pink-600" %>
+
+      <% end %>
+
+    <% else %>
+
+      <%= link_to "Login to review",
+        new_user_session_path,
+        class: "text-pink-500 underline" %>
+
+    <% end %>
+
+  </div>
+
+  <!-- 💬 Reviews List -->
+  <div class="mt-10 space-y-4">
+
+    <h3 class="font-semibold">Customer Reviews</h3>
+
+    <% if @product.reviews.any? %>
+
+      <% @product.reviews.each do |review| %>
+
+        <div class="bg-white p-4 rounded-xl shadow-sm border">
+
+          <div class="text-yellow-400 text-lg">
+            <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+          </div>
+
+          <p class="text-sm text-gray-600 mt-1">
+            <%= review.comment %>
+          </p>
+
+          <p class="text-xs text-gray-400 mt-2">
+            — <%= review.user.email %>
+          </p>
+
+        </div>
+
+      <% end %>
+
+    <% else %>
+
+      <p class="text-gray-400">No reviews yet. Be the first!</p>
+
+    <% end %>
+
+  </div>
+
 </div>
 
 <!-- ⚡ JS -->
