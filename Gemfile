@@ -69,6 +69,8 @@ gem "devise", "~> 5.0"
 
 gem "jwt", "~> 3.1"
 
+gem "pry"
+
 gem "graphql", "~> 2.5"
 gem "graphiql-rails", group: :development
 
@@ -84,3 +86,6 @@ gem "groupdate", "~> 6.8"
 
 
 gem "kaminari", "~> 1.2"
+
+gem "ruby-openai"
+gem "pg_search"

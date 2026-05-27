@@ -9,12 +9,52 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-
   def current_cart
-    if session[:cart_id]
-      Cart.find_by(id: session[:cart_id]) || create_cart
+
+    if user_signed_in?
+      # debugger
+      user_cart = current_user.cart || current_user.create_cart!
+
+      # Merge guest cart
+      if session[:guest_cart_id].present?
+
+        guest_cart = Cart.find_by(id: session[:guest_cart_id])
+
+        if guest_cart.present? && guest_cart.id != user_cart.id
+
+          guest_cart.cart_items.each do |item|
+
+            existing_item = user_cart.cart_items.find_by(
+              product_variant_id: item.product_variant_id
+            )
+
+            if existing_item
+              existing_item.increment!(:quantity, item.quantity)
+              item.destroy!
+            else
+              item.update!(cart: user_cart)
+            end
+
+          end
+
+          guest_cart.destroy!
+        end
+
+        session.delete(:guest_cart_id)
+      end
+
+      session[:cart_id] = user_cart.id
+
+      user_cart
+
     else
-      create_cart
+
+      if session[:cart_id]
+        Cart.find_by(id: session[:cart_id]) || create_cart
+      else
+        create_cart
+      end
+
     end
   end
 
@@ -31,11 +71,19 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) || "#{checkout_path}?reload=true"
+    if session.delete(:checkout_flow)
+      "#{new_checkout_path}?reload=true"
+    else
+      stored_location_for(resource) || root_path
+    end
   end
 
   def after_sign_up_path_for(resource)
-    stored_location_for(resource) || "#{checkout_path}?reload=true"
+    if session.delete(:checkout_flow)
+      "#{new_checkout_path}?reload=true"
+    else
+      stored_location_for(resource) || root_path
+    end
   end
 
   def store_user_location!

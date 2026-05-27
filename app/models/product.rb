@@ -15,6 +15,18 @@ class Product < ApplicationRecord
     joins(:category).where(categories: { slug: slug })
   }
 
+  include PgSearch::Model
+
+  pg_search_scope :ai_search,
+    against: [:name, :description],
+    associated_against: {
+      category: :name,
+      tags: :name
+    },
+    using: {
+      tsearch: { prefix: true }
+    }
+
   def average_rating
     reviews.average(:rating)&.round(1) || 0
   end

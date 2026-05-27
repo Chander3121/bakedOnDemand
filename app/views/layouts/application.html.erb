@@ -23,7 +23,6 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body class="bg-gray-100 flex flex-col min-h-screen">
     <%= render "shared/header" %>
     <div id="flash" class="fixed top-5 right-5 z-50 flex flex-col gap-2">
@@ -33,5 +32,6 @@
       <%= yield %>
     </main>
     <%= render "shared/footer" %>
+    <%= render "shared/ai_chat" %>
   </body>
 </html>
