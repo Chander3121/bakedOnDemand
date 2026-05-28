@@ -150,7 +150,7 @@ GEM
       activesupport (>= 6.1)
     graphiql-rails (1.10.5)
       railties
-    graphql (2.5.23)
+    graphql (2.6.3)
       base64
       fiber-storage
       logger
@@ -480,7 +480,7 @@ DEPENDENCIES
   devise (~> 5.0)
   dotenv-rails (~> 3.2)
   graphiql-rails
-  graphql (~> 2.5)
+  graphql (~> 2.6)
   groupdate (~> 6.8)
   image_processing (~> 1.2)
   importmap-rails
@@ -531,6 +531,7 @@ CHECKSUMS
   bootsnap (1.23.0) sha256=c1254f458d58558b58be0f8eb8f6eec2821456785b7cdd1e16248e2020d3f214
   brakeman (8.0.4) sha256=7bf921fa9638544835df9aa7b3e720a9a72c0267f34f92135955edd80d4dcf6f
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
+  bundler (4.0.12) sha256=7f8b757d28dfb636e7b24fba2344ac6dd13b5b24f4b46d62573d483f211825ac
   bundler-audit (0.9.3) sha256=81c8766c71e47d0d28a0f98c7eed028539f21a6ea3cd8f685eb6f42333c9b4e9
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   chartkick (5.2.1) sha256=2848d7de87189f30f28d077eb0bbdebc8a1f0f6f81de1ded95008fe564369949
@@ -564,7 +565,7 @@ CHECKSUMS
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   graphiql-rails (1.10.5) sha256=d911486eeac01e125d403a61c04f634cccaff9f8ecee5dc4efce3e7aa11bf5d3
-  graphql (2.5.23) sha256=cb59b2e67e4c23ce675755e4671136124d1016e14e9103de6d20cc11a58ec190
+  graphql (2.6.3) sha256=31fe845b509fda27db38d09380f27ffc0de1c7ea2f9f3b12fa42bdde8317239b
   groupdate (6.8.0) sha256=16f90ea18ca981c38e41e592416480b28353aa5e5cc3e7cb13a68b8fb5d40510
   httparty (0.24.2) sha256=8fca6a54aa0c4aa4303a0fd33e5e2156175d6a5334f714263b458abd7fda9c38
   i18n (1.14.8) sha256=285778639134865c5e0f6269e0b818256017e8cde89993fdfcbfb64d088824a5
